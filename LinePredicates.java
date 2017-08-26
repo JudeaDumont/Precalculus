@@ -19,10 +19,23 @@ public class LinePredicates {
         return false;
     }
 
+    public static Line[] computeAllLinesFromSortedPoints(Point[] points) {
+        Point pointTemp = points[0];
+        points[0] = points[1];
+        points[1] = pointTemp;
+        Collection<Line> computedLines = new ArrayList<Line>();
+        for (int i = 0; i < points.length; i++) {
+            computedLines.add(new Line(new Point(points[i]), new Point(points[(i + 1) % points.length]), 1));
+        }
+        Point pointTemp2 = points[1];
+        points[1] = points[0];
+        points[0] = pointTemp;
+        return computedLines.toArray(new Line[computedLines.size()]);
+    }
+
     public static Line[] computeAllLinesFromPoints(Point[] points) {
         Collection<Line> computedLines = new ArrayList<Line>();
         points = PointPredicates.sortPoints(points);
-
         for (int i = 0; i < points.length; i++) {
             computedLines.add(new Line(new Point(points[i]), new Point(points[(i + 1) % points.length]), 1));
         }
@@ -179,12 +192,10 @@ public class LinePredicates {
             if (velocity2.xCoordinate.equals(new BigDecimal(0)) && velocity1.yCoordinate.equals(new BigDecimal(0))) {
                 xCoordinateOfIntersection = new BigDecimal(startingPoint2.xCoordinate.toString());
                 yCoordinateOfIntersection = new BigDecimal(startingPoint1.yCoordinate.toString());
-            }
-            else if (velocity1.xCoordinate.equals(new BigDecimal(0)) && velocity2.yCoordinate.equals(new BigDecimal(0))) {
+            } else if (velocity1.xCoordinate.equals(new BigDecimal(0)) && velocity2.yCoordinate.equals(new BigDecimal(0))) {
                 xCoordinateOfIntersection = new BigDecimal(startingPoint1.xCoordinate.toString());
                 yCoordinateOfIntersection = new BigDecimal(startingPoint2.yCoordinate.toString());
-            }
-            else if (velocity2.xCoordinate.equals(new BigDecimal(0))) {
+            } else if (velocity2.xCoordinate.equals(new BigDecimal(0))) {
                 xCoordinateOfIntersection = new BigDecimal(startingPoint2.xCoordinate.toString());
                 yCoordinateOfIntersection = startingPoint1.xCoordinate.subtract
                         (startingPoint2.xCoordinate).divide
@@ -313,7 +324,7 @@ public class LinePredicates {
         Point intersection = getIntersection(startingPoint1, velocity1, startingPoint2, velocity2);
         BigDecimal time1 = getTimeFromPointToIntersection(startingPoint1, velocity1, intersection);
         BigDecimal time2 = getTimeFromPointToIntersection(startingPoint2, velocity2, intersection);
-        return time1.compareTo(time2) > 0? time1.subtract(time2) : time2.subtract(time1);
+        return time1.compareTo(time2) > 0 ? time1.subtract(time2) : time2.subtract(time1);
     }
 
 
@@ -321,10 +332,10 @@ public class LinePredicates {
         boolean yTrueXFalse = velocity1.xCoordinate.equals(new BigDecimal(0));
         BigDecimal line1CoordinateAgainstIntersection =
                 yTrueXFalse
-                        ?startingPoint1.yCoordinate:startingPoint1.xCoordinate;
+                        ? startingPoint1.yCoordinate : startingPoint1.xCoordinate;
         BigDecimal distanceOfCoordinateFromIntersection =
-                yTrueXFalse?line1CoordinateAgainstIntersection.subtract(intersection.yCoordinate)
-                        :line1CoordinateAgainstIntersection.subtract(intersection.xCoordinate);
+                yTrueXFalse ? line1CoordinateAgainstIntersection.subtract(intersection.yCoordinate)
+                        : line1CoordinateAgainstIntersection.subtract(intersection.xCoordinate);
         BigDecimal time = yTrueXFalse ? distanceOfCoordinateFromIntersection.divide(velocity1.yCoordinate, new MathContext(SystemGlobal.CALC_PRECISION))
                 : distanceOfCoordinateFromIntersection.divide(velocity1.xCoordinate, new MathContext(SystemGlobal.CALC_PRECISION));
         return time.abs();
@@ -338,8 +349,8 @@ public class LinePredicates {
         Point intersection = getIntersection(startingPoint1, velocity1, startingPoint2, velocity2);
         BigDecimal time1 = getTimeFromPointToIntersection(startingPoint1, velocity1, intersection);
         BigDecimal time2 = getTimeFromPointToIntersection(startingPoint2, velocity2, intersection);
-        Point trajectoryPointAfterTime1 = getPointOfTrajectoryAfterTime(startingPoint1, velocity1, (time1.compareTo(time2) < 0)?time1:time2);
-        Point trajectoryPointAfterTime2 = getPointOfTrajectoryAfterTime(startingPoint2, velocity2, (time1.compareTo(time2) < 0)?time1:time2);
+        Point trajectoryPointAfterTime1 = getPointOfTrajectoryAfterTime(startingPoint1, velocity1, (time1.compareTo(time2) < 0) ? time1 : time2);
+        Point trajectoryPointAfterTime2 = getPointOfTrajectoryAfterTime(startingPoint2, velocity2, (time1.compareTo(time2) < 0) ? time1 : time2);
         return new Line(trajectoryPointAfterTime1, trajectoryPointAfterTime2).distance;
     }
 

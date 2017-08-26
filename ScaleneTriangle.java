@@ -19,4 +19,14 @@ public class ScaleneTriangle extends Triangle {
     public void calcShapeArea() {
 
     }
+
+    @Override
+    public Point[] centerShapePointsUpright() {
+        return null;
+    }
+
+    @Override
+    public boolean pointInShape(Point point) {
+        return false;
+    }
 }

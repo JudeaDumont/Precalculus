@@ -19,6 +19,16 @@ public class RectangleConcrete extends Rectangle {
     }
 
     @Override
+    public Point[] centerShapePointsUpright() {
+        return null;
+    }
+
+    @Override
+    public boolean pointInShape(Point point) {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return super.toString();
     }

@@ -48,12 +48,13 @@ public abstract class Rectangle extends Shape {
                     if (!points[i].equals(points[i1]) && (lines[i2].point1.equals(points[i]) && !lines[i2].point2.equals(points[i1]))) {
                         boolean twoPointsShareCommonLine = false;
                         for (int i3 = 0; i3 < lines.length; i3++) {
-                            if ((lines[i3].point1.equals(points[i]) && lines[i3].point2.equals(points[i1]))||(lines[i3].point1.equals(points[i1]) && lines[i3].point2.equals(points[i]))) {
+                            if ((lines[i3].point1.equals(points[i]) && lines[i3].point2.equals(points[i1])) || (lines[i3].point1.equals(points[i1]) && lines[i3].point2.equals(points[i]))) {
                                 twoPointsShareCommonLine = true;
                             }
                         }
-                        if(!twoPointsShareCommonLine)
-                        {diags.add(new Line(new Point(points[i]), new Point(points[i1]), 0));}
+                        if (!twoPointsShareCommonLine) {
+                            diags.add(new Line(new Point(points[i]), new Point(points[i1]), 0));
+                        }
                     }
                 }
             }

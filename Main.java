@@ -1,5 +1,7 @@
 package com.company;
 
+import javafx.scene.transform.Rotate;
+
 import java.math.BigDecimal;
 
 public class Main {
@@ -224,24 +226,43 @@ public class Main {
 //        OutputPredicates.print(CirclePredicates.deriveRectangleFromCircle(new Circle(new Point(0,0), 2, 1 ), FourPropositions.RIGHT));
 //        OutputPredicates.print(new Circle(new Point(0,0), 2, 1 ));
 
-        Triangle triangle1 = Triangle.createInstance(new Point[]{new Point(0, 0), new Point(6, 0), new Point(3, 4)});
-        System.out.println(triangle1.type == TriangleShapeType.Equalateral);
-        System.out.println(triangle1.type == TriangleShapeType.Isoselece);
-        OutputPredicates.print(triangle1);
-        OutputPredicates.print(triangle1.lines);
-        OutputPredicates.printBar();
-        Line[] meridians = triangle1.getMeridians();
-        OutputPredicates.print(meridians);
+//        Triangle triangle1 = Triangle.createInstance(new Point[]{new Point(0, 0), new Point(6, 0), new Point(3, 4)});
+//        System.out.println(triangle1.type == TriangleShapeType.Equalateral);
+//        System.out.println(triangle1.type == TriangleShapeType.Isoselece);
+//        OutputPredicates.print(triangle1);
+//        OutputPredicates.print(triangle1.lines);
+//        OutputPredicates.printBar();
+//        Line[] meridians = triangle1.getMeridians();
+//        OutputPredicates.print(meridians);
+//
+//        OutputPredicates.printBar();
+//        Triangle triangle2 = TrianglePredicates.calculateEqualateralTriangleAtOriginFromDistanceOfOne(new BigDecimal(1));
+//        System.out.println(triangle2.type == TriangleShapeType.Equalateral);
+//        OutputPredicates.print(triangle2);
+//        OutputPredicates.print(triangle2.lines);
+//
+//        OutputPredicates.printBar();
+//        Line[] meridians1 = triangle2.getMeridians();
+//        OutputPredicates.print(meridians1);
+//        OutputPredicates.printBar();
 
+//        Point point = new Point(0,2);
+//        Point rotate = point.rotate(new Point(0, 0), 45);
+//        OutputPredicates.print(rotate);
+//
+        Rectangle square = Rectangle.createInstance(new Point[]{new Point(1, 1), new Point(5, 1), new Point(1, 5), new Point(5, 5)});
+        OutputPredicates.print(square);
+        square.rotate(new Point(1,1), 45);
         OutputPredicates.printBar();
-        Triangle triangle2 = TrianglePredicates.calculateEqualateralTriangleAtOriginFromDistanceOfOne(new BigDecimal(1));
-        System.out.println(triangle2.type == TriangleShapeType.Equalateral);
-        OutputPredicates.print(triangle2);
-        OutputPredicates.print(triangle2.lines);
-
-        OutputPredicates.printBar();
-        Line[] meridians1 = triangle2.getMeridians();
-        OutputPredicates.print(meridians1);
-        OutputPredicates.printBar();
+        OutputPredicates.print(square);
+        System.out.println(square.pointInShape(new Point(1,2)));//PASS
+        System.out.println(square.pointInShape(new Point(2,1)));//SHOULD FAIL
+        System.out.println(square.pointInShape(new Point(2,2)));//PASS //THIS IS THE MOMENT OF TRUTH TEST
+        System.out.println(square.pointInShape(new Point(1,6.67)));//SHOULD FAIL
+//        Triangle triangle2 = TrianglePredicates.calculateEqualateralTriangleAtOriginFromDistance(new BigDecimal(1));
+//        System.out.println(triangle2.type == TriangleShapeType.Equalateral);
+//        OutputPredicates.print(triangle2);
+//        triangle2.rotate(new Point(0, 0), 90);
+//        OutputPredicates.print(triangle2);
     }
 }

@@ -47,4 +47,14 @@ public class IsoceleceTriangle extends Triangle {
             }
         }
     }
+
+    @Override
+    public Point[] centerShapePointsUpright() {
+        return null;
+    }
+
+    @Override
+    public boolean pointInShape(Point point) {
+        return false;
+    }
 }

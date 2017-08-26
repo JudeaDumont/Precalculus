@@ -27,4 +27,14 @@ public class RightTriangle extends Triangle {
                     .round(new MathContext(lengths[0].multiply(lengths[1]).divide(new BigDecimal(2), new MathContext(SystemGlobal.CALC_PRECISION))
                             .toBigInteger().toString().length() + EQUALITY_PRECISION));
     }
+
+    @Override
+    public Point[] centerShapePointsUpright() {
+        return null;
+    }
+
+    @Override
+    public boolean pointInShape(Point point) {
+        return false;
+    }
 }

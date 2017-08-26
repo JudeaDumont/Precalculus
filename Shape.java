@@ -19,8 +19,11 @@ public abstract class Shape {
 
     public abstract void calcShapeArea();
 
-    public void calcPerimeter()
-    {
+    public abstract Point[] centerShapePointsUpright();
+
+    public abstract boolean pointInShape(Point point);
+
+    public void calcPerimeter() {
         perimeter = new BigDecimal(0);
         for (Line line : lines) {
             perimeter = perimeter.add(line.distance);
@@ -62,8 +65,9 @@ public abstract class Shape {
         for (Line line : lines) {
             line.getXIntercept();
         }
-    return xIntercepts.toArray(new Point[xIntercepts.size()]);
+        return xIntercepts.toArray(new Point[xIntercepts.size()]);
     }
+
     public Point[] getXIntercepts() {
         Collection<Point> yIntercepts = new ArrayList<Point>();
         for (Point point : points) {
@@ -76,8 +80,8 @@ public abstract class Shape {
         }
         return yIntercepts.toArray(new Point[yIntercepts.size()]);
     }
-    public Point[][] getIntercepts()
-    {
+
+    public Point[][] getIntercepts() {
         Point[] xIntercepts = getXIntercepts();
         Point[] yIntercepts = getYIntercepts();
         return new Point[][]{xIntercepts, yIntercepts};
@@ -86,11 +90,25 @@ public abstract class Shape {
     @Override
     public String toString() {
         String shapeString = "";
+        shapeString+="\n\n" +
+                ""+getShapeType() + "\n";
         for (Line line : lines) {
-            shapeString+=line.toString()+"\n";
+            shapeString += line.toString() + "\n";
         }
-        shapeString+= "Area: " + area.toString();
+        shapeString += "Area: " + area.toString();
         return shapeString;
     }
+
+    public void rotate(Point centerOfRotation, double rotationInDegrees) {
+        //This is the only method so far that alters the existing object rather than returning a copied object with the rotation
+
+        for (int i = 0; i < points.length; i++) {
+            Point rotate = points[i].rotate(centerOfRotation, rotationInDegrees);
+            points[i] = rotate;
+        }
+        this.lines = LinePredicates.computeAllLinesFromSortedPoints(points);
+        calcPerimeter();
+    }
+
 }
 

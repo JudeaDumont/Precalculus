@@ -1,6 +1,8 @@
 package com.company;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.text.DecimalFormat;
 
 public class Point {
     public BigDecimal xCoordinate = new BigDecimal("0");
@@ -45,8 +47,22 @@ public class Point {
 
     @Override
     public String toString() {
-        return (this.pointName.equals("") ? "Unnamed" : this.pointName) + " (" + this.xCoordinate.toString() + "," + this.yCoordinate.toString() + ")\n";
+        return (this.pointName.equals("") ? "Unnamed" : this.pointName) + " (" + this.xCoordinate.doubleValue() + "," + this.yCoordinate.toString() + ")\n";
     }
+
+    public Point rotate(Point centerOfRotation, double rotationInDegrees) {
+        Point point = new Point(xCoordinate.subtract(centerOfRotation.xCoordinate), yCoordinate.subtract(centerOfRotation.yCoordinate));
+        Point transformedOrigin = new Point(0, 0);
+        double radius = new Line(point, transformedOrigin).distance.doubleValue();
+        double angle = 450 - Math.toDegrees(Math.atan2(point.xCoordinate.doubleValue(), point.yCoordinate.doubleValue()));
+        rotationInDegrees = rotationInDegrees % 360;
+        angle = (angle + rotationInDegrees) % 360;
+        BigDecimal xCoordinate = new BigDecimal(Double.toString(Math.cos(Math.toRadians(angle)) * radius));
+        BigDecimal yCoordinate = new BigDecimal(Double.toString(Math.sin(Math.toRadians(angle)) * radius));
+        return new Point(xCoordinate.add(centerOfRotation.xCoordinate), yCoordinate.add(centerOfRotation.yCoordinate));
+    }
+
+
 
     public void display() {
         System.out.println(this.toString());

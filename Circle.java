@@ -1,7 +1,6 @@
 package com.company;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -84,5 +83,15 @@ public class Circle extends Shape{
     @Override
     public void calcShapeArea() {
         area=new BigDecimal(Math.pow(radius, 2)*SystemGlobal.PI);
+    }
+
+    @Override
+    public Point[] centerShapePointsUpright() {
+        return null;
+    }
+
+    @Override
+    public boolean pointInShape(Point point) {
+        return false;
     }
 }

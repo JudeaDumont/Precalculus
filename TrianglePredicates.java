@@ -40,7 +40,7 @@ public class TrianglePredicates {
         TriangleShapeType type = null;
         if ((lengths[0].equals(lengths[1]) || lengths[0].equals(lengths[2]) || lengths[1].equals(lengths[2])) && ((lengths[0].pow(2).add(lengths[1].pow(2)))
                 .round(new MathContext((lengths[0].pow(2).add(lengths[1].pow(2))).toBigInteger().toString().length())).stripTrailingZeros()
-                .toString().equals((lengths[2].pow(2).round(new MathContext(lengths[2].pow(2).toBigInteger().toString().length())).stripTrailingZeros().toString()))) ) {
+                .toString().equals((lengths[2].pow(2).round(new MathContext(lengths[2].pow(2).toBigInteger().toString().length())).stripTrailingZeros().toString())))) {
             type = TriangleShapeType.RightIsoselece;
         } else if ((lengths[0].pow(2).add(lengths[1].pow(2)))
                 .round(new MathContext((lengths[0].pow(2).add(lengths[1].pow(2))).toBigInteger().toString().length())).stripTrailingZeros()
@@ -56,13 +56,13 @@ public class TrianglePredicates {
         return type;
     }
 
-    public static Triangle calculateEqualateralTriangleAtOriginFromDistanceOfOne(BigDecimal distance) {
+    public static Triangle calculateEqualateralTriangleAtOriginFromDistance(BigDecimal distance) {
         try {
             return Triangle.createInstance(new Point[]{
                     new Point(0, 0),
                     new Point(distance, new BigDecimal(0)),
                     new Point(distance.divide(new BigDecimal(2), new MathContext(SystemGlobal.CALC_PRECISION)),
-                    new BigDecimal(Math.sqrt(distance.multiply(distance).subtract((distance.multiply(distance).divide(new BigDecimal(4)))).doubleValue()))
+                            new BigDecimal(Math.sqrt(distance.multiply(distance).subtract((distance.multiply(distance).divide(new BigDecimal(4)))).doubleValue()))
                     )});
         } catch (Exception ex) {
             ex.printStackTrace();

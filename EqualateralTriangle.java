@@ -25,4 +25,14 @@ public class EqualateralTriangle extends Triangle {
         , new MathContext(lines[0].distance.multiply(getMeridians()[0].distance)
                         .divide(new BigDecimal(2)).toBigInteger().toString().length() + EQUALITY_PRECISION));
     }
+
+    @Override
+    public Point[] centerShapePointsUpright() {
+        return null;
+    }
+
+    @Override
+    public boolean pointInShape(Point point) {
+        return false;
+    }
 }
