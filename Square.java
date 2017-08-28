@@ -30,7 +30,7 @@ public class Square extends Rectangle {
             modPoints[i] = new Point(points[i].xCoordinate.subtract(difference.xCoordinate), points[i].yCoordinate.subtract(difference.yCoordinate));
         }
 
-        double angle = 450 - Math.toDegrees(Math.atan2(modPoints[1].xCoordinate.doubleValue(), modPoints[1].yCoordinate.doubleValue()));
+        double angle = AnglePredicates.getAngleFromPoint(modPoints[1]);
         double angleOfChange = 90 - (angle%90);
 
         for (int i = 0; i < modPoints.length; i++) {
@@ -54,7 +54,7 @@ public class Square extends Rectangle {
             modPoints[i] = new Point(points[i].xCoordinate.subtract(difference.xCoordinate), points[i].yCoordinate.subtract(difference.yCoordinate));
         }
 
-        double angle = 450 - Math.toDegrees(Math.atan2(modPoints[1].xCoordinate.doubleValue(), modPoints[1].yCoordinate.doubleValue()));
+        double angle = AnglePredicates.getAngleFromPoint(modPoints[1]);
         double angleOfChange = 90 - (angle%90);
 
         for (int i = 0; i < modPoints.length; i++) {

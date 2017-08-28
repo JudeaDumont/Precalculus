@@ -54,7 +54,7 @@ public class Point {
         Point point = new Point(xCoordinate.subtract(centerOfRotation.xCoordinate), yCoordinate.subtract(centerOfRotation.yCoordinate));
         Point transformedOrigin = new Point(0, 0);
         double radius = new Line(point, transformedOrigin).distance.doubleValue();
-        double angle = 450 - Math.toDegrees(Math.atan2(point.xCoordinate.doubleValue(), point.yCoordinate.doubleValue()));
+        double angle = AnglePredicates.getAngleFromPoint(point);
         rotationInDegrees = rotationInDegrees % 360;
         angle = (angle + rotationInDegrees) % 360;
         BigDecimal xCoordinate = new BigDecimal(Double.toString(Math.cos(Math.toRadians(angle)) * radius));

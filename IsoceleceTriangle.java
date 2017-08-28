@@ -55,6 +55,46 @@ public class IsoceleceTriangle extends Triangle {
 
     @Override
     public boolean pointInShape(Point point) {
+
+        //THIS IS UNFINISHED
+
+        Point[] pointPairOfOddSide = new Point[2];
+        Line side1 = new Line(points[0], points[1]);
+        Line side2 = new Line(points[1], points[2]);
+        Line side3 = new Line(points[3], points[0]);
+        Line equalSide1 = null;
+        Line equalSide2 = null;
+        Line oddSide = side1.distance.divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                .equals(side2.distance.divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                )?side3:side2.distance.divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                .equals(side3.distance.divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                )?side1:side3.distance.divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                .equals(side1.distance.divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                )?side2:null;
+
+        pointPairOfOddSide = new Point[]{new Point(oddSide.point1), new Point(oddSide.point2)};
+        Point[] modpoints = new Point[3];
+
+        for (int i = 0; i < points.length; i++) {
+            modpoints[i] = new Point(points[i].xCoordinate.subtract(pointPairOfOddSide[0].xCoordinate), points[i].yCoordinate.subtract(pointPairOfOddSide[0].yCoordinate));
+        }
+        pointPairOfOddSide[0] = new Point(0,0);
+
+        pointPairOfOddSide[1] = new Point(pointPairOfOddSide[1].xCoordinate.subtract(pointPairOfOddSide[0].xCoordinate),
+                pointPairOfOddSide[1].yCoordinate.subtract(pointPairOfOddSide[0].yCoordinate));
+
+        double angle1 = 0;
+        double angle2 = 0;
+        boolean foundOne = false;
+        for (int i = 0; i < modpoints.length; i++) {
+            if (!modpoints[i].equals(new Point(0, 0)) && !foundOne) {
+                angle1 = AnglePredicates.getAngleFromPoint(modpoints[i]);
+                foundOne=true;
+            }
+            else if (!modpoints[i].equals(new Point(0, 0)) && foundOne) {
+                angle2 = AnglePredicates.getAngleFromPoint(modpoints[i]);
+            }
+        }
         return false;
     }
 }

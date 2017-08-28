@@ -92,6 +92,44 @@ public class Circle extends Shape{
 
     @Override
     public boolean pointInShape(Point point) {
-        return false;
+        Point modPoint = new Point(point.xCoordinate.subtract(center.xCoordinate), point.yCoordinate.subtract(center.yCoordinate));
+        double angle = AnglePredicates.getAngleFromPoint(modPoint);
+        Point pointOnCircleAtAngle = new Point(Math.cos(Math.toRadians(angle)) * radius, Math.sin(Math.toRadians(angle)) * radius);
+
+        boolean pointInCircle = false;
+
+        if(angle > 0 && angle < 90)
+        {
+            pointInCircle = modPoint.xCoordinate.compareTo(pointOnCircleAtAngle.xCoordinate)<=0 && modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate)<=0;
+        }
+        else if(angle == 90)
+        {
+            pointInCircle = modPoint.xCoordinate.compareTo(new BigDecimal(0))==0 && modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate)<=0;
+        }
+        else if(angle == 0)
+        {
+            pointInCircle = modPoint.xCoordinate.compareTo(pointOnCircleAtAngle.xCoordinate)<=0 && modPoint.yCoordinate.compareTo(new BigDecimal(0))==0;
+        }
+        else if(angle > 90 && angle < 180)
+        {
+            pointInCircle = modPoint.xCoordinate.compareTo(pointOnCircleAtAngle.xCoordinate)>=0 && modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate)<=0;
+        }
+        else if(angle == 180)
+        {
+            pointInCircle = modPoint.xCoordinate.compareTo(pointOnCircleAtAngle.xCoordinate)>=0 && modPoint.yCoordinate.compareTo(new BigDecimal(0))==0;
+        }
+        else if(angle > 180 && angle < 270)
+        {
+            pointInCircle = modPoint.xCoordinate.compareTo(pointOnCircleAtAngle.xCoordinate)>=0 && modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate)>=0;
+        }
+        else if(angle == 270)
+        {
+            pointInCircle = modPoint.xCoordinate.compareTo(new BigDecimal(0))==0 && modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate)>=0;
+        }
+        else if(angle > 270 && angle < 360)
+        {
+            pointInCircle = modPoint.xCoordinate.compareTo(pointOnCircleAtAngle.xCoordinate)<=0 && modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate)>=0;
+        }
+        return pointInCircle;
     }
 }
