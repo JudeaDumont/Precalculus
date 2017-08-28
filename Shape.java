@@ -90,8 +90,8 @@ public abstract class Shape {
     @Override
     public String toString() {
         String shapeString = "";
-        shapeString+="\n\n" +
-                ""+getShapeType() + "\n";
+        shapeString += "\n\n" +
+                "" + getShapeType() + "\n";
         for (Line line : lines) {
             shapeString += line.toString() + "\n";
         }

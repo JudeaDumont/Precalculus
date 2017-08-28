@@ -12,9 +12,6 @@ public class RightTrianglePredicates {
         int indexOfRightAnglePoint = 0;
         boolean angleWasNegative = false;
         for (int i = 0; i < pointsOfRightTriangle.length; i++) {
-
-
-
             double differenceInOtherAngles =
                     (AnglePredicates.getAngleFromPoint(new Point(pointsOfRightTriangle[(i + 1) % 3].xCoordinate.subtract(pointsOfRightTriangle[i].xCoordinate).doubleValue(),
                             pointsOfRightTriangle[(i + 1) % 3].yCoordinate.subtract(pointsOfRightTriangle[i].yCoordinate).doubleValue()))) -
@@ -28,13 +25,11 @@ public class RightTrianglePredicates {
         }
 
 
-
         double angle1 =
                 (AnglePredicates.getAngleFromPoint(new Point(pointsOfRightTriangle[(indexOfRightAnglePoint + 1) % 3].xCoordinate
                         .subtract(pointsOfRightTriangle[indexOfRightAnglePoint].xCoordinate).doubleValue(),
                         pointsOfRightTriangle[(indexOfRightAnglePoint + 1) % 3].yCoordinate
                                 .subtract(pointsOfRightTriangle[indexOfRightAnglePoint].yCoordinate).doubleValue())));
-
 
 
         double angle2 =
@@ -50,7 +45,9 @@ public class RightTrianglePredicates {
             modPoints[i] = new Point(pointsOfRightTriangle[i].xCoordinate.subtract(pointsOfRightTriangle[indexOfRightAnglePoint].xCoordinate),
                     pointsOfRightTriangle[i].yCoordinate.subtract(pointsOfRightTriangle[indexOfRightAnglePoint].yCoordinate));
         }
-
+        angleOfRotation *= 10;
+        angleOfRotation = Math.round(angleOfRotation);
+        angleOfRotation /= 10;
         for (int i = 0; i < modPoints.length; i++) {
             modPoints[i] = modPoints[i].rotate(new Point(0, 0), angleOfRotation);
         }
@@ -58,7 +55,7 @@ public class RightTrianglePredicates {
         point = new Point(point.xCoordinate.subtract(pointsOfRightTriangle[indexOfRightAnglePoint].xCoordinate),
                 point.yCoordinate.subtract(pointsOfRightTriangle[indexOfRightAnglePoint].yCoordinate));
 
-        point = point.rotate(new Point(0, 0), angleWasNegative?angleOfRotation:angleOfRotation);
+        point = point.rotate(new Point(0, 0), angleWasNegative ? angleOfRotation : angleOfRotation);
 
 
         BigDecimal maxX = new BigDecimal(-Double.MAX_VALUE);

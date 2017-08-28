@@ -63,7 +63,6 @@ public class Point {
     }
 
 
-
     public void display() {
         System.out.println(this.toString());
     }

@@ -270,13 +270,72 @@ public class Main {
 //        System.out.println(circle.pointInShape(new Point(1.7,1.7)));
 //          Triangle triangle = Triangle.createInstance(new Point[]{new Point(1,1), new Point(5,1), new Point(1,4)});
 //        System.out.println(triangle.pointInShape(new Point(2.5,2.8)));
-
-        Triangle triangle2 = TrianglePredicates.calculateEqualateralTriangleAtOriginFromDistance(new BigDecimal(2));
-        OutputPredicates.print(triangle2);
-        System.out.println(triangle2.pointInShape(new Point(0.9,0.9)));
-        System.out.println(triangle2.pointInShape(new Point(0,0)));
-        System.out.println(triangle2.pointInShape(new Point(2,0)));
-        System.out.println(triangle2.pointInShape(new Point(1,1.73)));
-        System.out.println(triangle2.pointInShape(new Point(0,0)));
+//
+//        Triangle triangle2 = TrianglePredicates.calculateEqualateralTriangleAtOriginFromDistance(new BigDecimal(2));
+//        OutputPredicates.print(triangle2);
+//        System.out.println(triangle2.pointInShape(new Point(0.9,0.9)));
+//        System.out.println(triangle2.pointInShape(new Point(0,0)));
+//        System.out.println(triangle2.pointInShape(new Point(2,0)));
+//        System.out.println(triangle2.pointInShape(new Point(1,1.73)));
+//        System.out.println(triangle2.pointInShape(new Point(0,0)));
+//        Triangle triangleIso = Triangle.createInstance(new Point[]
+//                {
+//                        new Point(0,0),
+//                        new Point(-4,0),
+//                        new Point(-2, -6)
+//                });
+//
+//        System.out.println(triangleIso.getShapeType());
+//        System.out.println(triangleIso.pointInShape(new Point(0,0)));
+//        System.out.println(triangleIso.pointInShape(new Point(-4,0)));
+//        System.out.println(triangleIso.pointInShape(new Point(-2,-6)));
+//        System.out.println(triangleIso.pointInShape(new Point(-2,-3)));
+//        System.out.println(triangleIso.pointInShape(new Point(-2,-3.1)));
+//        System.out.println(triangleIso.pointInShape(new Point(-2,-6.1))); //should be false
+//
+//        OutputPredicates.printBar();
+//        Triangle triangleIso2 = Triangle.createInstance(new Point[]
+//                {
+//                        new Point(0,0),
+//                        new Point(4,0),
+//                        new Point(2, 6)
+//                });
+//
+//        System.out.println(triangleIso2.getShapeType());
+//        System.out.println(triangleIso2.pointInShape(new Point(0,0)));
+//        System.out.println(triangleIso2.pointInShape(new Point(4,0)));
+//        System.out.println(triangleIso2.pointInShape(new Point(2,6)));
+//        System.out.println(triangleIso2.pointInShape(new Point(2,3)));
+//        System.out.println(triangleIso2.pointInShape(new Point(2,3.1)));
+//        System.out.println(triangleIso2.pointInShape(new Point(2,6.1))); //should be false
+//
+//        OutputPredicates.printBar();
+//        Triangle triangleIso3 = Triangle.createInstance(new Point[]
+//                {
+//                        new Point(0,0),
+//                        new Point(-4,0),
+//                        new Point(-2, 6)
+//                });
+//
+//        System.out.println(triangleIso3.getShapeType());
+//        System.out.println(triangleIso3.pointInShape(new Point(0,0)));
+//        System.out.println(triangleIso3.pointInShape(new Point(-4,0)));
+//        System.out.println(triangleIso3.pointInShape(new Point(-2,6)));
+//        System.out.println(triangleIso3.pointInShape(new Point(-2,3)));
+//        System.out.println(triangleIso3.pointInShape(new Point(-2,3.1)));
+//        System.out.println(triangleIso3.pointInShape(new Point(-2,6.1))); //should be false
+        Triangle triangleRight = Triangle.createInstance(new Point[]
+                {
+                        new Point(0, 0),
+                        new Point(0, 4),
+                        new Point(3, 0)
+                }
+        );
+        System.out.println(triangleRight.pointInShape(new Point(1.5, 2)));
+        System.out.println(triangleRight.pointInShape(new Point(0, 0)));
+        System.out.println(triangleRight.pointInShape(new Point(0, 4)));
+        System.out.println(triangleRight.pointInShape(new Point(3, 0)));
+        System.out.println(triangleRight.pointInShape(new Point(3, 0.1)));//should be false
+        System.out.println(triangleRight.pointInShape(new Point(2.9, 0.1)));//should be true
     }
 }

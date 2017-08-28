@@ -5,6 +5,6 @@ package com.company;
  */
 public class AnglePredicates {
     public static double getAngleFromPoint(Point modPoint) {
-        return (450 - Math.toDegrees(Math.atan2(modPoint.xCoordinate.doubleValue(), modPoint.yCoordinate.doubleValue())))%360;
+        return (450 - Math.toDegrees(Math.atan2(modPoint.xCoordinate.doubleValue(), modPoint.yCoordinate.doubleValue()))) % 360;
     }
 }

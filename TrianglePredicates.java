@@ -48,7 +48,13 @@ public class TrianglePredicates {
             type = TriangleShapeType.Right;
         } else if (lengths[0].equals(lengths[1]) && lengths[1].equals(lengths[2])) {
             type = TriangleShapeType.Equalateral;
-        } else if (lengths[0].equals(lengths[1]) || lengths[0].equals(lengths[2]) || lengths[1].equals(lengths[2])) {
+        } else if (lengths[0].divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                .equals(lengths[1].divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                ) || lengths[0].divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                .equals(lengths[2].divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                ) || lengths[1].divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                .equals(lengths[2].divide(new BigDecimal(1), new MathContext(SystemGlobal.EQUALITY_PRECISION))
+                )) {
             type = TriangleShapeType.Isoselece;
         } else {
             type = TriangleShapeType.Scalene;
@@ -62,7 +68,7 @@ public class TrianglePredicates {
                     new Point(0, 0),
                     new Point(distance, new BigDecimal(0)),
                     new Point(distance.divide(new BigDecimal(2), new MathContext(SystemGlobal.CALC_PRECISION)),
-                            new BigDecimal(Math.sqrt(distance.multiply(distance).subtract((distance.multiply(distance).divide(new BigDecimal(4)))).doubleValue()))
+                            new BigDecimal(Math.sqrt(distance.multiply(distance).subtract((distance.multiply(distance).divide(new BigDecimal(4), new MathContext(SystemGlobal.CALC_PRECISION)))).doubleValue()))
                     )});
         } catch (Exception ex) {
             ex.printStackTrace();
