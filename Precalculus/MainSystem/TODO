@@ -1,0 +1,27 @@
+All the member access operators need to be checked if a handle can be used to replace a large grouping of them, when a member of a member of a member
+is accessed multiple times within the same function.
+
+Projectiles need to be tested for downward velocitys toward the left and right
+
+planes need to coexist in some fashion
+
+a large revision of everything regarding 3 dimensions might take place
+
+In unity things just fall into negative infinity, I like the idea of a globally defined lower boundary more
+
+methods that alter points should be refactored to pass functions to the transform points method
+
+Bounce physics for projectiles are a possibility
+
+material differentiation is a possibility that would change the physics of projectiles
+
+Kotlin needs to made use of to build testing procedures
+
+more tooling integration in the general should be a priority
+
+The trajectories directory needs to be revisited and class components refactored for the most sensicle approach.
+
+The line intersection function in point predicates needs to be refactored into a rays package, where the point with a
+velocity unaffected by gravity is called a ray and may be sotred and utilized as such
+
+The entire project needs to be checked for good aliasing
