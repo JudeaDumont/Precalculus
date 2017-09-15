@@ -3,7 +3,10 @@ package MainSystem.Tests;
 import MainSystem.GlobalSystem.OutputPredicates;
 import MainSystem.Points.Point;
 import MainSystem.Rectangles.Rectangle;
+import MainSystem.Trajectorys.Projectile;
 import MainSystem.Triangles.Triangle;
+
+import java.math.BigDecimal;
 
 public class Main {
     public static void main(String[] args) {
@@ -347,8 +350,51 @@ public class Main {
 //        OutputPredicates.print(transformedPoints);
 //        OutputPredicates.print(Triangle.createInstance(new Point[]{}));
         //This doesnt work because the sorting logic for points is broken in that it removes all of the points of some huebrus.
-        OutputPredicates.print(Triangle.createInstance(new Point[]{new Point(1, 0)}));
-        OutputPredicates.print(Triangle.createInstance(new Point[]{new Point(1, 0), new Point(0, 1)}));
-        OutputPredicates.print(Rectangle.createInstance(new Point[]{new Point(0, 0), new Point(1, 0), new Point(0, 1), new Point(1, 1)}));
+//        OutputPredicates.print(Triangle.createInstance(new Point[]{new Point(1, 0)}));
+//        OutputPredicates.print(Triangle.createInstance(new Point[]{new Point(1, 0), new Point(0, 1)}));
+//        OutputPredicates.print(Rectangle.createInstance(new Point[]{new Point(0, 0), new Point(1, 0), new Point(0, 1), new Point(1, 1)}));
+        Projectile projectile = new Projectile(new Point[]{new Point(1,1)},new BigDecimal(1),new BigDecimal(0),new Point(1000, 10));
+        OutputPredicates.print(projectile.trajectedObject.points);
+
+        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(16.7)).trajectedObject.points);
+        for(int i = 1; i < 100; i++)
+        {
+            OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(i)).trajectedObject.points);
+            System.out.println(i);
+        }
+//        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(14)).trajectedObject.points);
+//        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(15)).trajectedObject.points);
+//        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(16.7)).trajectedObject.points);
+        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(15000)).trajectedObject.points);
+
+        Projectile projectile2 = new Projectile(new Point[]{new Point(1,1)},new BigDecimal(1),new BigDecimal(0),new Point(0, 1000));
+        OutputPredicates.print(projectile2.trajectedObject.points);
+
+        OutputPredicates.print(projectile2.getProjectileAtTime(new BigDecimal(16.7)).trajectedObject.points);
+        for(int i = 100; i < 2000; i+=100)
+        {
+            OutputPredicates.print(projectile2.getProjectileAtTime(new BigDecimal(i)).trajectedObject.points);
+            System.out.println(i);
+        }
+//        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(14)).trajectedObject.points);
+//        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(15)).trajectedObject.points);
+//        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(16.7)).trajectedObject.points);
+        OutputPredicates.print(projectile2.getProjectileAtTime(new BigDecimal(15000)).trajectedObject.points);
+
+        Projectile leftwardProjectile = new Projectile(new Point[]{new Point(1,1)},new BigDecimal(1),new BigDecimal(0),new Point(-10, 10));
+        OutputPredicates.print(leftwardProjectile.trajectedObject.points);
+
+        OutputPredicates.print(leftwardProjectile.getProjectileAtTime(new BigDecimal(16.7)).trajectedObject.points);
+        for(int i = 1; i < 20; i++)
+        {
+            OutputPredicates.print(leftwardProjectile.getProjectileAtTime(new BigDecimal(i)).trajectedObject.points);
+            System.out.println(i);
+        }
+//        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(14)).trajectedObject.points);
+//        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(15)).trajectedObject.points);
+//        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(16.7)).trajectedObject.points);
+        OutputPredicates.print(leftwardProjectile.getProjectileAtTime(new BigDecimal(15000)).trajectedObject.points);
+
     }
+
 }

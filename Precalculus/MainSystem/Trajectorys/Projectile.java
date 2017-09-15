@@ -1,12 +1,16 @@
 package MainSystem.Trajectorys;
 
 import MainSystem.GlobalSystem.Shape;
+import MainSystem.GlobalSystem.SystemGlobal;
 import MainSystem.Points.Point;
+import MainSystem.Points.PointPredicates;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.util.function.Function;
 
 public class Projectile {
-    private Shape trajectedObject = new Shape(new Point[]{}) {
+    public Shape trajectedObject = new Shape(new Point[]{}) {
         @Override
         public String getShapeType() {
             return "Projectile";
@@ -28,40 +32,120 @@ public class Projectile {
         }
     };
     public ProjectileMotion projectileMotion = null;
-    //Point of push or pull is always dead center and even across all points of shape
+    public BigDecimal xVertex = null;
 
-    public Projectile(Point[] points, BigDecimal accelerationDueToGravity, BigDecimal time, Point startingVelocity)
-    {
+    public Projectile(Point[] points, BigDecimal accelerationDueToGravity, BigDecimal time, Point startingVelocity) {
         trajectedObject.points = points;
-        projectileMotion = new ProjectileMotion(accelerationDueToGravity, time, startingVelocity);
+        initializeProjectile(accelerationDueToGravity, time, startingVelocity);
     }
-    public Projectile(Shape shape, BigDecimal accelerationDueToGravity, BigDecimal time, Point startingVelocity)
-    {
+
+    public Projectile(Shape shape, BigDecimal accelerationDueToGravity, BigDecimal time, Point startingVelocity) {
         trajectedObject.points = shape.points;
-        projectileMotion = new ProjectileMotion(accelerationDueToGravity, time, startingVelocity);
+        initializeProjectile(accelerationDueToGravity, time, startingVelocity);
     }
-    public Projectile getProjectileAtTime(BigDecimal time)
+
+    public Projectile(Projectile projectile) {
+        trajectedObject.points = new Point[projectile.trajectedObject.points.length];
+        for (int i = 0; i < trajectedObject.points.length; i++) {
+            trajectedObject.points[i] = new Point(projectile.trajectedObject.points[i]);
+        }
+        initializeProjectile(projectile);
+    }
+
+    private void initializeProjectile(Projectile projectile) {
+        projectileMotion = new ProjectileMotion(projectile.projectileMotion);
+        initializeVertex();
+    }
+
+    private void initializeProjectile(BigDecimal accelerationDueToGravity, BigDecimal time, Point startingVelocity) {
+        projectileMotion = new ProjectileMotion(accelerationDueToGravity, time, startingVelocity);
+        initializeVertex();
+    }
+
+    private void initializeVertex() {
+        BigDecimal xAxisResistance = projectileMotion.xAxisResistance;
+        BigDecimal zero = new BigDecimal(0);
+        BigDecimal velocityXCoordinate = projectileMotion.startingVelocity.xCoordinate;
+        if (velocityXCoordinate.compareTo(zero) < 0) {
+            if (xAxisResistance.compareTo(zero) < 0) {
+                xAxisResistance = xAxisResistance.negate();
+            }
+        } else if (velocityXCoordinate.compareTo(zero) > 0) {
+            if (xAxisResistance.compareTo(zero) > 0) {
+                xAxisResistance = xAxisResistance.negate();
+            }
+        }
+        projectileMotion.xAxisResistance = xAxisResistance;
+        xVertex = deriveVertex(xAxisResistance.multiply(new BigDecimal(SystemGlobal.XAXISRESISTANCE_CONSTANT)), velocityXCoordinate);
+    }
+
+    public BigDecimal deriveVertex(BigDecimal resistance, BigDecimal velocity)
     {
-        //The issue here is, what if the projectile is projected downward.
-        //To compensate for directionality, velocity must be represented by a point not a singular value
-        //What if it is projected to the left rather than the right?
+        return velocity.divide(resistance.multiply(new BigDecimal(2)), new MathContext(SystemGlobal.CALC_PRECISION)).negate();
+    }
 
-        //height(y) = 0.5*(gravityAcceleration*(time^2)) + (initVelocity.y*time) + initHeight
-        //distance(x) = 0.3*(gravityAcceleration*(time^2)) + (initVelocity.x*time) + initX
-        //if (initvelocity is negative) gravity acceleration is positive
-        //if (initvelocity is positive) gravity acceleration is negative
-        //gravity acceleration for the x axis just represent resistance in the horizontal direction.
+    public Projectile getProjectileAtTime(BigDecimal time) {
+        Projectile projectileAfterTime = new Projectile(this);
+        ProjectileMotion projectileMotion = projectileAfterTime.projectileMotion;
+        projectileMotion.time = projectileMotion.time.add(time);
+        BigDecimal zero = new BigDecimal(0);
+        boolean belowZero = false;
+        boolean onXPlane = false;
+        Point[] pointsOfTrajectory = projectileAfterTime.trajectedObject.points;
+        int pointLengthShapes = pointsOfTrajectory.length;
+        for (int i = 0; i < pointLengthShapes; i++) {
+            BigDecimal yCoordinate = pointsOfTrajectory[i].yCoordinate;
+            if (yCoordinate.compareTo(zero) < 0) {
+                belowZero = true;
+                break;
+            } else if (yCoordinate.compareTo(zero) == 0) {
+                onXPlane = true;
+                break;
+            }
+        }
+        if (!belowZero) {
+            BigDecimal velocityXCoordinate = projectileMotion.startingVelocity.xCoordinate;
 
-        //There needs to be resistance against both of the values such that they wind up at zero
-        //with zero resistance projectiles would go for infinity.
+            BigDecimal yCoordinateVelocity = projectileMotion.startingVelocity.yCoordinate;
+            if (yCoordinateVelocity.compareTo(zero) > 0 ||
+                    (yCoordinateVelocity.compareTo(zero) < 0 && !onXPlane)) {
+                pointsOfTrajectory = projectileAfterTime.trajectedObject.points = PointPredicates.transformPoints(pointsOfTrajectory, new Function<Point, Point>() {
+                    @Override
+                    public Point apply(Point point) {
+                        BigDecimal timeOfProjectileAfterEjection = projectileMotion.time;
+                        return new Point(
 
-        //Getting the Y and X vertexes
-        //x (time) coordinate of yVertex = (initVelocity.y/(2*(0.5*(gravityAcceleration)))
-        //y (max height) coordinate of yVertex = 0.5*(gravityAcceleration*(x^2)) + (initVelocity.y*x) + initHeight
-        //When height == 0 then height continues == 0
-        //when (0.3*(gravityAcceleration*(time^2)) + (initVelocity.x*time)) == 0 then x continues == last x
-        //not doing material differentiation or bounce physics at this time.
-        //
-        return null;
+                                new BigDecimal(SystemGlobal.XAXISRESISTANCE_CONSTANT).multiply(
+                                        projectileMotion.xAxisResistance.multiply(
+                                                (timeOfProjectileAfterEjection.compareTo(xVertex)<=0?timeOfProjectileAfterEjection:xVertex).pow(2)
+                                        )).add(
+                                        velocityXCoordinate.multiply(timeOfProjectileAfterEjection.compareTo(xVertex)<=0?timeOfProjectileAfterEjection:xVertex)
+                                ).add(point.xCoordinate),
+
+                                new BigDecimal(SystemGlobal.GRAVITY_CONSTANT).multiply(
+                                        projectileMotion.accelerationDueToGravity.multiply(
+                                                timeOfProjectileAfterEjection.pow(2)
+                                        )).add(
+                                        yCoordinateVelocity.multiply(timeOfProjectileAfterEjection)
+                                ).add(point.yCoordinate)
+                        );
+                    }
+                });
+                BigDecimal minimum = new BigDecimal(Double.MAX_VALUE);
+                for (int i = 0; i < pointLengthShapes; i++) {
+                    BigDecimal yCoordinateOfEachShapePoint = pointsOfTrajectory[i].yCoordinate;
+                    if (yCoordinateOfEachShapePoint.compareTo(minimum) < 0) {
+                        minimum = yCoordinateOfEachShapePoint;
+                    }
+                }
+                if (minimum.compareTo(zero) < 0) {
+                    for (int i = 0; i < pointLengthShapes; i++) {
+                        Point pointOfShape = pointsOfTrajectory[i];
+                        pointOfShape.yCoordinate = pointOfShape.yCoordinate.subtract(minimum);
+                    }
+                }
+            }
+        }
+        return projectileAfterTime;
     }
 }
