@@ -16,17 +16,23 @@ public class RectangularTwoDimensionalPlane {
     //This method is specific to the cartesian coordinate system in the the plane is distributed across the x an y axis
     //For the actual2dimensional plane, there would be min and max varaibles for each axis
     private void modifyAxisMaxLengths(BigDecimal xAxisStartingMaxValue, BigDecimal yAxisStartingMaxValue) {
-        twoDimensionalPlane.xAxis.point1.xCoordinate = new BigDecimal(xAxisStartingMaxValue.negate().toString());
-        twoDimensionalPlane.xAxis.point1.yCoordinate = new BigDecimal("0");
+        Line twoDimensionalXAxis = twoDimensionalPlane.xAxis;
+        Point xAxisPoint1 = twoDimensionalXAxis.point1;
+        xAxisPoint1.xCoordinate = new BigDecimal(xAxisStartingMaxValue.negate().toString());
+        xAxisPoint1.yCoordinate = new BigDecimal("0");
 
-        twoDimensionalPlane.xAxis.point2.xCoordinate = new BigDecimal(xAxisStartingMaxValue.toString());
-        twoDimensionalPlane.xAxis.point2.yCoordinate = new BigDecimal("0");
+        Point xAxisPoint2 = twoDimensionalXAxis.point2;
+        xAxisPoint2.xCoordinate = new BigDecimal(xAxisStartingMaxValue.toString());
+        xAxisPoint2.yCoordinate = new BigDecimal("0");
 
-        twoDimensionalPlane.yAxis.point1.xCoordinate = new BigDecimal("0");
-        twoDimensionalPlane.yAxis.point1.yCoordinate = new BigDecimal(yAxisStartingMaxValue.negate().toString());
+        Line twoDimensionalYAxis = twoDimensionalPlane.yAxis;
+        Point yAxisPoint1 = twoDimensionalYAxis.point1;
+        yAxisPoint1.xCoordinate = new BigDecimal("0");
+        yAxisPoint1.yCoordinate = new BigDecimal(yAxisStartingMaxValue.negate().toString());
 
-        twoDimensionalPlane.yAxis.point2.xCoordinate = new BigDecimal("0");
-        twoDimensionalPlane.yAxis.point2.yCoordinate = new BigDecimal(yAxisStartingMaxValue.toString());
+        Point yAxisPoint2 = twoDimensionalYAxis.point2;
+        yAxisPoint2.xCoordinate = new BigDecimal("0");
+        yAxisPoint2.yCoordinate = new BigDecimal(yAxisStartingMaxValue.toString());
     }
 
     public RectangularTwoDimensionalPlane(BigDecimal xAxisStartingMaxValue, BigDecimal yAxisStartingMaxValue) {

@@ -8,94 +8,126 @@ import MainSystem.Rectangles.Rectangle;
 
 import java.math.BigDecimal;
 
+import static MainSystem.GlobalSystem.SystemGlobal.DEFAULT_CIRCLE_PRECISION;
+
 /**
  * Created by Owner on 7/18/2017.
  */
 public class CirclePredicates {
-
     public static Circle deriveCircleFromLine(Line line) {
+        Point point1 = line.point1;
+        Point point2 = line.point2;
         return new Circle(
-                line.point1.xCoordinate.abs().add(line.point1.yCoordinate.abs()).compareTo
-                        (line.point2.xCoordinate.abs().add(line.point2.yCoordinate.abs())) > 0 ?
-                        line.point2 : line.point1
-                , line.distance.doubleValue(), SystemGlobal.DEFAULT_CIRCLE_PRECISION);
+                point1.xCoordinate.abs().add(point1.yCoordinate.abs()).compareTo
+                        (point2.xCoordinate.abs().add(point2.yCoordinate.abs())) > 0 ?
+                        point2 : point1
+                , line.distance.doubleValue(), DEFAULT_CIRCLE_PRECISION);
     }
 
     public static Line getTangent(int pointIndex, Circle circle) {
-        Line tangentLine;
-        if (!circle.points[pointIndex].xCoordinate.equals(circle.center.xCoordinate) &&
-                !circle.points[pointIndex].yCoordinate.equals(circle.center.yCoordinate)) {
-            Line innerLine = new Line(circle.center, circle.points[pointIndex]);
-            BigDecimal perpendicularSlope = new BigDecimal(innerLine.slope.toString()).negate();
-            tangentLine = new Line(
-                    new Point(
-                            circle.radius + circle.points[pointIndex].xCoordinate.doubleValue(),
-                            (circle.radius * perpendicularSlope.doubleValue()) + circle.points[pointIndex].yCoordinate.doubleValue()),
-                    new Point(-circle.radius + circle.points[pointIndex].xCoordinate.doubleValue(),
-                            (-circle.radius * perpendicularSlope.doubleValue()) + circle.points[pointIndex].yCoordinate.doubleValue()));
-        } else if (circle.points[pointIndex].yCoordinate.equals(circle.center.yCoordinate)) {
-            tangentLine = new Line(new Point(circle.points[pointIndex].xCoordinate, circle.radius),
-                    new Point(circle.points[pointIndex].xCoordinate, -circle.radius));
-        } else {
-            tangentLine = new Line(new Point(circle.radius, circle.points[pointIndex].yCoordinate),
-                    new Point(-circle.radius, circle.points[pointIndex].yCoordinate));
+        Line tangentLine = null;
+        if(pointIndex >= 0 && pointIndex < circle.points.length) {
+            Point pointAtIndex = circle.points[pointIndex];
+            BigDecimal xCoordinate = pointAtIndex.xCoordinate;
+            BigDecimal centerPointXCoord = circle.center.xCoordinate;
+            BigDecimal yCoordinate = pointAtIndex.yCoordinate;
+            BigDecimal centerPointYCoord = circle.center.yCoordinate;
+            double radiusOfCircle = circle.radius;
+            if (!xCoordinate.equals(centerPointXCoord) &&
+                    !yCoordinate.equals(centerPointYCoord)) {
+                Line innerLine = new Line(circle.center, pointAtIndex);
+                BigDecimal perpendicularSlope = new BigDecimal(innerLine.slope.toString()).negate();
+                double xCoordDouble = xCoordinate.doubleValue();
+                double yCoordDouble = yCoordinate.doubleValue();
+                double perpendicularSlopeDouble = perpendicularSlope.doubleValue();
+                tangentLine = new Line(
+                        new Point(
+                                radiusOfCircle + xCoordDouble,
+                                (radiusOfCircle * perpendicularSlopeDouble) + yCoordDouble),
+                        new Point(-radiusOfCircle + xCoordDouble,
+                                (-radiusOfCircle * perpendicularSlopeDouble) + yCoordDouble));
+            } else if (yCoordinate.equals(centerPointYCoord)) {
+                tangentLine = new Line(new Point(xCoordinate, radiusOfCircle),
+                        new Point(xCoordinate, -radiusOfCircle));
+            } else {
+                tangentLine = new Line(new Point(radiusOfCircle, yCoordinate),
+                        new Point(-radiusOfCircle, yCoordinate));
+            }
         }
         return tangentLine;
     }
 
-    public static Rectangle deriveSquareFromCircle(Circle circle) {
+    public static Rectangle deriveContainingSquareFromCircle(Circle circle) {
+        double sqrtRadius = Math.sqrt(circle.radius);
+        BigDecimal centerXCoordinate = circle.center.xCoordinate;
+        BigDecimal centerYCoordinate = circle.center.yCoordinate;
+        BigDecimal positiveSqrtRadius = new BigDecimal(sqrtRadius);
+        BigDecimal negativeSqrtRadius = new BigDecimal(-sqrtRadius);
+        BigDecimal sqrtRadiusXCoordinateSum = positiveSqrtRadius.add(centerXCoordinate);
+        BigDecimal sqrtRadiusYCenterSum = positiveSqrtRadius.add(centerYCoordinate);
+        BigDecimal radiusAndXCoordDifference = negativeSqrtRadius.add(centerXCoordinate);
+        BigDecimal radiusAndYCoordDifference = negativeSqrtRadius.add(centerYCoordinate);
         return Rectangle.createInstance(new Point[]{
-                new Point(new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.xCoordinate),
-                        new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                new Point(new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.xCoordinate),
-                        new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                new Point(new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.xCoordinate),
-                        new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                new Point(new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.xCoordinate),
-                        new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
+                new Point(sqrtRadiusXCoordinateSum,
+                        sqrtRadiusYCenterSum),
+                new Point(radiusAndXCoordDifference,
+                        sqrtRadiusYCenterSum),
+                new Point(radiusAndXCoordDifference,
+                        radiusAndYCoordDifference),
+                new Point(sqrtRadiusXCoordinateSum,
+                        radiusAndYCoordDifference),
         });
     }
 
     public static Rectangle deriveRectangleFromCircle(Circle circle, FourPropositions fourPropositions) {
         Rectangle derivedRectangle = null;
+        double radiusSqrt = Math.sqrt(circle.radius);
+        BigDecimal centerXCoordinate = circle.center.xCoordinate;
+        BigDecimal centerYCoordinate = circle.center.yCoordinate;
+        BigDecimal positiveSqrtRadius = new BigDecimal(radiusSqrt);
+        BigDecimal negativeSqrtRadius = new BigDecimal(-radiusSqrt);
+        BigDecimal sqrtRadiusCenterDifference = negativeSqrtRadius.add(centerYCoordinate);
+        BigDecimal sqrtRadiusCenterSum = positiveSqrtRadius.add(centerYCoordinate);
+        BigDecimal sqrtRadiusXCoordSum = positiveSqrtRadius.add(centerXCoordinate);
+        BigDecimal sqrtRadiusXCoordDifference = negativeSqrtRadius.add(centerXCoordinate);
         switch (fourPropositions) {
             case BOTTOM:
                 derivedRectangle = Rectangle.createInstance(
                         new Point[]{
-                                new Point(new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(circle.center.yCoordinate.toString())),
-                                new Point(new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(circle.center.yCoordinate.toString())),
-                                new Point(new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                                new Point(new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.yCoordinate))
+                                new Point(sqrtRadiusXCoordSum, centerYCoordinate),
+                                new Point(sqrtRadiusXCoordDifference, centerYCoordinate),
+                                new Point(sqrtRadiusXCoordDifference, sqrtRadiusCenterDifference),
+                                new Point(sqrtRadiusXCoordSum, sqrtRadiusCenterDifference)
                         }
                 );
                 break;
             case TOP:
                 derivedRectangle = Rectangle.createInstance(
                         new Point[]{
-                                new Point(new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                                new Point(new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                                new Point(new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(circle.center.yCoordinate.toString())),
-                                new Point(new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(circle.center.yCoordinate.toString()))
+                                new Point(sqrtRadiusXCoordSum, sqrtRadiusCenterSum),
+                                new Point(sqrtRadiusXCoordDifference, sqrtRadiusCenterSum),
+                                new Point(sqrtRadiusXCoordDifference, centerYCoordinate),
+                                new Point(sqrtRadiusXCoordSum, centerYCoordinate)
                         }
                 );
                 break;
             case LEFT:
                 derivedRectangle = Rectangle.createInstance(
                         new Point[]{
-                                new Point(new BigDecimal(circle.center.xCoordinate.toString()), new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                                new Point(new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                                new Point(new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                                new Point(new BigDecimal(circle.center.xCoordinate.toString()), new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.yCoordinate))
+                                new Point(centerXCoordinate, sqrtRadiusCenterSum),
+                                new Point(sqrtRadiusXCoordDifference, sqrtRadiusCenterSum),
+                                new Point(sqrtRadiusXCoordDifference, sqrtRadiusCenterDifference),
+                                new Point(centerXCoordinate, sqrtRadiusCenterDifference)
                         }
                 );
                 break;
             case RIGHT:
                 derivedRectangle = Rectangle.createInstance(
                         new Point[]{
-                                new Point(new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                                new Point(new BigDecimal(circle.center.xCoordinate.toString()), new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                                new Point(new BigDecimal(circle.center.xCoordinate.toString()), new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.yCoordinate)),
-                                new Point(new BigDecimal(Math.sqrt(circle.radius)).add(circle.center.xCoordinate), new BigDecimal(-Math.sqrt(circle.radius)).add(circle.center.yCoordinate))
+                                new Point(sqrtRadiusXCoordSum, sqrtRadiusCenterSum),
+                                new Point(centerXCoordinate, sqrtRadiusCenterSum),
+                                new Point(centerXCoordinate, sqrtRadiusCenterDifference),
+                                new Point(sqrtRadiusXCoordSum, sqrtRadiusCenterDifference)
                         }
                 );
                 break;

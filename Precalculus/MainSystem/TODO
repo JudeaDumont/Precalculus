@@ -1,6 +1,8 @@
 All the member access operators need to be checked if a handle can be used to replace a large grouping of them, when a member of a member of a member
 is accessed multiple times within the same function.
 
+Code needs to commented in general
+
 Projectiles need to be tested for downward velocitys toward the left and right
 
 planes need to coexist in some fashion

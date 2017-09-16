@@ -18,10 +18,13 @@ public class CartesianCoordinateSystem extends TwoDimensionalPlane {
 
     public CartesianCoordinateSystem(double xAxisLength, double yAxisLength, double denominator) {
         super(new Line(new Point(-xAxisLength, 0), new Point(xAxisLength, 0), 1),
-                new Line(new Point(0, -yAxisLength), new Point(0, yAxisLength), 1), new BigDecimal(denominator), new BigDecimal(denominator));
+                new Line(new Point(0, -yAxisLength), new Point(0, yAxisLength), 1),
+                new BigDecimal(denominator), new BigDecimal(denominator));
     }
 
     public CartesianCoordinateSystem() {
-        super(new Line(new Point(-100, 0), new Point(100, 0), 1), new Line(new Point(0, -100), new Point(0, 100), 1), new BigDecimal(10), new BigDecimal(10));
+        super(new Line(new Point(-100, 0),
+                new Point(100, 0), 1), new Line(new Point(0, -100),
+                new Point(0, 100), 1), new BigDecimal(10), new BigDecimal(10));
     }
 }

@@ -10,13 +10,20 @@ import java.math.BigDecimal;
 public class CartesianCoordinateSystemPredicates {
     public static Quadrant getQuadrantFromPoint(Point point) {
         Quadrant quadrant = null;
-        if (point.xCoordinate.compareTo(new BigDecimal(0)) > 0 && point.yCoordinate.compareTo(new BigDecimal(0)) > 0) {
+        BigDecimal xCoordinate = point.xCoordinate;
+        BigDecimal yCoordinate = point.yCoordinate;
+        BigDecimal zero = new BigDecimal(0);
+        int xPosOrNeg = xCoordinate.compareTo(zero);
+        int yPosOrNeg = yCoordinate.compareTo(zero);
+        boolean xPN = xPosOrNeg > 0;
+        boolean yPN = yPosOrNeg > 0;
+        if (xPN && yPN) {
             quadrant = Quadrant.Quad1;
-        } else if (point.xCoordinate.compareTo(new BigDecimal(0)) < 0 && point.yCoordinate.compareTo(new BigDecimal(0)) > 0) {
+        } else if (!xPN && yPN) {
             quadrant = Quadrant.Quad2;
-        } else if (point.xCoordinate.compareTo(new BigDecimal(0)) < 0 && point.yCoordinate.compareTo(new BigDecimal(0)) < 0) {
+        } else if (!xPN && !yPN) {
             quadrant = Quadrant.Quad3;
-        } else if (point.xCoordinate.compareTo(new BigDecimal(0)) > 0 && point.yCoordinate.compareTo(new BigDecimal(0)) < 0) {
+        } else if (xPN && !yPN) {
             quadrant = Quadrant.Quad4;
         }
         return quadrant;

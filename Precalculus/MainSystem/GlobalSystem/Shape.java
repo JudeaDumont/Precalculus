@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static MainSystem.GlobalSystem.SystemGlobal.zero;
+
 /**
  * Created by Owner on 7/10/2017.
  */
@@ -18,7 +20,6 @@ public abstract class Shape {
     public BigDecimal area;
     public BigDecimal perimeter;
     public String name = "";
-
     public abstract String getShapeType();
 
     public abstract void calcShapeArea();
@@ -46,10 +47,11 @@ public abstract class Shape {
         calcShapeArea();
     }
 
+
     public Point[] getYIntercepts() {
         Collection<Point> yIntercepts = new ArrayList<Point>();
         for (Point point : points) {
-            if (point.xCoordinate.equals(new BigDecimal(0))) {
+            if (point.xCoordinate.equals(zero)) {
                 yIntercepts.add(point);
             }
         }
@@ -62,7 +64,7 @@ public abstract class Shape {
     public Point[] getXIntercepts() {
         Collection<Point> xIntercepts = new ArrayList<Point>();
         for (Point point : points) {
-            if (point.yCoordinate.equals(new BigDecimal(0))) {
+            if (point.yCoordinate.equals(zero)) {
                 xIntercepts.add(point);
             }
         }

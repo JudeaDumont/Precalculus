@@ -1,10 +1,11 @@
 package MainSystem.Tests;
 
+import MainSystem.Circle.Circle;
+import MainSystem.Circle.CirclePredicates;
 import MainSystem.GlobalSystem.OutputPredicates;
+import MainSystem.Lines.Line;
 import MainSystem.Points.Point;
-import MainSystem.Rectangles.Rectangle;
 import MainSystem.Trajectorys.Projectile;
-import MainSystem.Triangles.Triangle;
 
 import java.math.BigDecimal;
 
@@ -219,7 +220,7 @@ public class Main {
 //
 //        System.out.println(LinePredicates.getTimeOffsetOfCollision(new Point(400, 0), new Point(-250, 0), new Point(0, 600), new Point(0, -400)).toString());
 //        System.out.println(LinePredicates.getClosestDistanceOfTwoIntersectingTrejectorys(new Point(400, 0), new Point(-250, 0), new Point(0, 600), new Point(0, -400)).toString());
-//        OutputPredicates.print(CirclePredicates.deriveSquareFromCircle(new Circle(new Point(0,0), 2, 1 )));
+//        OutputPredicates.print(CirclePredicates.deriveContainingSquareFromCircle(new Circle(new Point(0,0), 2, 1 )));
 //        OutputPredicates.printBar();
 //        OutputPredicates.print(CirclePredicates.deriveRectangleFromCircle(new Circle(new Point(0,0), 2, 1 ), FourPropositions.BOTTOM));
 //        OutputPredicates.printBar();
@@ -395,6 +396,22 @@ public class Main {
 //        OutputPredicates.print(projectile.getProjectileAtTime(new BigDecimal(16.7)).trajectedObject.points);
         OutputPredicates.print(leftwardProjectile.getProjectileAtTime(new BigDecimal(15000)).trajectedObject.points);
 
+    Circle circle = new Circle(new Point(0,0),4, 2 );
+        OutputPredicates.print(circle.pointInShape(new Point(1,1)));
+        OutputPredicates.print(circle.pointInShape(new Point(2,2)));
+
+        OutputPredicates.print(CirclePredicates.deriveCircleFromLine(new Line(new Point(0,0),new Point(1,1))));
+        OutputPredicates.printBar();
+
+        OutputPredicates.print(circle);
+        OutputPredicates.print(CirclePredicates.getTangent(4, circle)); //I'm not to sure if this is correct
+
+        OutputPredicates.printBar();
+        OutputPredicates.print(CirclePredicates.deriveContainingSquareFromCircle(circle)); //I'm not to sure if this is correct
+
+
+
     }
+
 
 }

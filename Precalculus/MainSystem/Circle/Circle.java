@@ -1,12 +1,15 @@
 package MainSystem.Circle;
 
 import MainSystem.Angles.AnglePredicates;
+import MainSystem.GlobalSystem.SystemGlobal;
 import MainSystem.Points.Point;
 import MainSystem.Points.PointPredicates;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static MainSystem.GlobalSystem.SystemGlobal.PI;
 
 public class Circle extends MainSystem.GlobalSystem.Shape {
     public Point center = new Point(0, 0);
@@ -15,7 +18,7 @@ public class Circle extends MainSystem.GlobalSystem.Shape {
     @Override
     public void calcPerimeter() {
         perimeter = new BigDecimal(2).multiply
-                (new BigDecimal(MainSystem.GlobalSystem.SystemGlobal.PI)).multiply(new BigDecimal(radius));
+                (new BigDecimal(PI)).multiply(new BigDecimal(radius));
     }
 
     public Circle(Point center, double radius, long precision) {
@@ -42,67 +45,81 @@ public class Circle extends MainSystem.GlobalSystem.Shape {
 
     public Point[] getPointsOfACircle(long precision) {
         ArrayList<Point> circlePoints = new ArrayList<>();
-        Collection<Double> divisionsOfRadius = new ArrayList<>();
         for (long i = 0; i < precision; i++) {
             Point point = (calculatePointOfCircle(radius / (i + 1)));
 
+            BigDecimal pointXCoord = point.xCoordinate;
+            BigDecimal centerPointXCoord = center.xCoordinate;
+            BigDecimal pointYCoord = point.yCoordinate;
+            BigDecimal centerPointYCoordinate = center.yCoordinate;
+            BigDecimal pointAndCenterPointXSummation = pointXCoord.add(centerPointXCoord);
+            BigDecimal pointAndCenterPointYSummation = pointYCoord.add(centerPointYCoordinate);
+            BigDecimal pointAndCenterPointXDifference = pointXCoord.negate().add(centerPointXCoord);
+            BigDecimal pointAndCenterPointYDifference = pointYCoord.negate().add(centerPointYCoordinate);
+            //The following variables have to do with proportionality between X and Y
+            //See the output of circle2 in MajorRefactoringRegressionTesting for elaboration
+            BigDecimal yPointAndXCenterSummation = pointYCoord.add(centerPointXCoord);
+            BigDecimal xPointAndYCenterSummation = pointXCoord.add(centerPointYCoordinate);
+            BigDecimal yPointAndXCenterDifference = pointYCoord.negate().add(centerPointXCoord);
+            BigDecimal xPointAndYCenterDifference = pointXCoord.negate().add(centerPointYCoordinate);
+
             if (!PointPredicates.doesDuplicateExist
                     (circlePoints, new Point
-                            (point.xCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                                    point.yCoordinate.doubleValue() + center.yCoordinate.doubleValue()))) {
+                            (pointAndCenterPointXSummation,
+                                    pointAndCenterPointYSummation))) {
                 circlePoints.add(new Point
-                        (point.xCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                                point.yCoordinate.doubleValue() + center.yCoordinate.doubleValue()));
+                        (pointAndCenterPointXSummation,
+                                pointAndCenterPointYSummation));
             }
             if (!PointPredicates.doesDuplicateExist
                     (circlePoints, new Point
-                            (-point.xCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                                    -point.yCoordinate.doubleValue() + center.yCoordinate.doubleValue()))) {
+                            (pointAndCenterPointXDifference,
+                                    pointAndCenterPointYDifference))) {
                 circlePoints.add(new Point
-                        (-point.xCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                                -point.yCoordinate.doubleValue() + center.yCoordinate.doubleValue()));
+                        (pointAndCenterPointXDifference,
+                                pointAndCenterPointYDifference));
             }
             if (!PointPredicates.doesDuplicateExist(circlePoints, new Point
-                    (-point.xCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                            point.yCoordinate.doubleValue() + center.yCoordinate.doubleValue()))) {
+                    (pointAndCenterPointXDifference,
+                            pointAndCenterPointYSummation))) {
                 circlePoints.add(new Point
-                        (-point.xCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                                point.yCoordinate.doubleValue() + center.yCoordinate.doubleValue()));
+                        (pointAndCenterPointXDifference,
+                                pointAndCenterPointYSummation));
             }
             if (!PointPredicates.doesDuplicateExist(circlePoints, new Point
-                    (point.xCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                            -point.yCoordinate.doubleValue() + center.yCoordinate.doubleValue()))) {
+                    (pointAndCenterPointXSummation,
+                            pointAndCenterPointYDifference))) {
                 circlePoints.add(new Point
-                        (point.xCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                                -point.yCoordinate.doubleValue() + center.yCoordinate.doubleValue()));
+                        (pointAndCenterPointXSummation,
+                                pointAndCenterPointYDifference));
             }
             if (!PointPredicates.doesDuplicateExist(circlePoints, new Point
-                    (point.yCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                            point.xCoordinate.doubleValue() + center.yCoordinate.doubleValue()))) {
+                    (yPointAndXCenterSummation,
+                            xPointAndYCenterSummation))) {
                 circlePoints.add(new Point
-                        (point.yCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                                point.xCoordinate.doubleValue() + center.yCoordinate.doubleValue()));
+                        (yPointAndXCenterSummation,
+                                xPointAndYCenterSummation));
             }
             if (!PointPredicates.doesDuplicateExist(circlePoints, new Point
-                    (-point.yCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                            -point.xCoordinate.doubleValue() + center.yCoordinate.doubleValue()))) {
+                    (yPointAndXCenterDifference,
+                            xPointAndYCenterDifference))) {
                 circlePoints.add(new Point
-                        (-point.yCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                                -point.xCoordinate.doubleValue() + center.yCoordinate.doubleValue()));
+                        (yPointAndXCenterDifference,
+                                xPointAndYCenterDifference));
             }
             if (!PointPredicates.doesDuplicateExist(circlePoints, new Point
-                    (-point.yCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                            point.xCoordinate.doubleValue() + center.yCoordinate.doubleValue()))) {
+                    (yPointAndXCenterDifference,
+                            xPointAndYCenterSummation))) {
                 circlePoints.add(new Point
-                        (-point.yCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                                point.xCoordinate.doubleValue() + center.yCoordinate.doubleValue()));
+                        (yPointAndXCenterDifference,
+                                xPointAndYCenterSummation));
             }
             if (!PointPredicates.doesDuplicateExist(circlePoints, new Point
-                    (point.yCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                            -point.xCoordinate.doubleValue() + center.yCoordinate.doubleValue()))) {
+                    (yPointAndXCenterSummation,
+                            xPointAndYCenterDifference))) {
                 circlePoints.add(new Point
-                        (point.yCoordinate.doubleValue() + center.xCoordinate.doubleValue(),
-                                -point.xCoordinate.doubleValue() + center.yCoordinate.doubleValue()));
+                        (yPointAndXCenterSummation,
+                                xPointAndYCenterDifference));
             }
         }
         return circlePoints.toArray(new Point[circlePoints.size()]);
@@ -124,7 +141,7 @@ public class Circle extends MainSystem.GlobalSystem.Shape {
 
     @Override
     public void calcShapeArea() {
-        area = new BigDecimal(Math.pow(radius, 2) * MainSystem.GlobalSystem.SystemGlobal.PI);
+        area = new BigDecimal(Math.pow(radius, 2) * PI);
     }
 
     @Override
@@ -144,38 +161,53 @@ public class Circle extends MainSystem.GlobalSystem.Shape {
 
         boolean pointInCircle = false;
 
+        BigDecimal xCoordinate = modPoint.xCoordinate;
+        BigDecimal pointOnCircleAtAngleXCoordinate = pointOnCircleAtAngle.xCoordinate;
+        BigDecimal yCoordinate = modPoint.yCoordinate;
+        BigDecimal pointOnCircleAtAngleYCoordinate = pointOnCircleAtAngle.yCoordinate;
+        int xCoordinateComparedToPointAtAngle = xCoordinate.compareTo(pointOnCircleAtAngleXCoordinate);
+        int yCoordinateComparedToPointAtAngle = yCoordinate.compareTo(pointOnCircleAtAngleYCoordinate);
+        boolean yCoordComparedToPointAtAngleNonPositive = yCoordinateComparedToPointAtAngle <= 0;
+        boolean xCoordComparedToPointAtAngleNonPositive = xCoordinateComparedToPointAtAngle <= 0;
         if (angle > 0 && angle < 90) {
-            pointInCircle = modPoint.xCoordinate.compareTo
-                    (pointOnCircleAtAngle.xCoordinate) <= 0 &&
-                    modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate) <= 0;
-        } else if (angle == 90) {
-            pointInCircle = modPoint.xCoordinate.compareTo
-                    (new BigDecimal(0)) == 0 &&
-                    modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate) <= 0;
-        } else if (angle == 0) {
-            pointInCircle = modPoint.xCoordinate.compareTo
-                    (pointOnCircleAtAngle.xCoordinate) <= 0 &&
-                    modPoint.yCoordinate.compareTo(new BigDecimal(0)) == 0;
-        } else if (angle > 90 && angle < 180) {
-            pointInCircle = modPoint.xCoordinate.compareTo
-                    (pointOnCircleAtAngle.xCoordinate) >= 0 &&
-                    modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate) <= 0;
-        } else if (angle == 180) {
-            pointInCircle = modPoint.xCoordinate.compareTo
-                    (pointOnCircleAtAngle.xCoordinate) >= 0 &&
-                    modPoint.yCoordinate.compareTo(new BigDecimal(0)) == 0;
-        } else if (angle > 180 && angle < 270) {
-            pointInCircle = modPoint.xCoordinate.compareTo
-                    (pointOnCircleAtAngle.xCoordinate) >= 0 &&
-                    modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate) >= 0;
-        } else if (angle == 270) {
-            pointInCircle = modPoint.xCoordinate.compareTo
-                    (new BigDecimal(0)) == 0 &&
-                    modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate) >= 0;
-        } else if (angle > 270 && angle < 360) {
-            pointInCircle = modPoint.xCoordinate.compareTo
-                    (pointOnCircleAtAngle.xCoordinate) <= 0 &&
-                    modPoint.yCoordinate.compareTo(pointOnCircleAtAngle.yCoordinate) >= 0;
+            pointInCircle = xCoordComparedToPointAtAngleNonPositive &&
+                    yCoordComparedToPointAtAngleNonPositive;
+        } else {
+            int xPositiveOrNegative = xCoordinate.compareTo
+                    (SystemGlobal.zero);
+            boolean xIsZero = xPositiveOrNegative == 0;
+            if (angle == 90) {
+                pointInCircle = xIsZero &&
+                        yCoordComparedToPointAtAngleNonPositive;
+            } else {
+                int yPositiveOrNegative = yCoordinate.compareTo(SystemGlobal.zero);
+                boolean yIsZero = yPositiveOrNegative == 0;
+                if (angle == 0) {
+                    pointInCircle = xCoordComparedToPointAtAngleNonPositive &&
+                            yIsZero;
+                } else {
+                    boolean xCoordComparedToAnglePointNonNegative = xCoordinateComparedToPointAtAngle >= 0;
+                    if (angle > 90 && angle < 180) {
+                        pointInCircle = xCoordComparedToAnglePointNonNegative &&
+                                yCoordComparedToPointAtAngleNonPositive;
+                    } else if (angle == 180) {
+                        pointInCircle = xCoordComparedToAnglePointNonNegative &&
+                                yIsZero;
+                    } else {
+                        boolean yCoordComparedToAnglePointNonNegative = yCoordinateComparedToPointAtAngle >= 0;
+                        if (angle > 180 && angle < 270) {
+                            pointInCircle = xCoordComparedToAnglePointNonNegative &&
+                                    yCoordComparedToAnglePointNonNegative;
+                        } else if (angle == 270) {
+                            pointInCircle = xIsZero &&
+                                    yCoordComparedToAnglePointNonNegative;
+                        } else if (angle > 270 && angle < 360) {
+                            pointInCircle = xCoordComparedToPointAtAngleNonPositive &&
+                                    yCoordComparedToAnglePointNonNegative;
+                        }
+                    }
+                }
+            }
         }
         return pointInCircle;
     }

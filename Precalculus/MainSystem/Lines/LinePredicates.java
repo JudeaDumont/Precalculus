@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static MainSystem.GlobalSystem.SystemGlobal.EQUALITY_PRECISION;
+import static MainSystem.GlobalSystem.SystemGlobal.*;
 
 public class LinePredicates {
 
@@ -28,10 +28,10 @@ public class LinePredicates {
         points[0] = points[1];
         points[1] = pointTemp;
         Collection<Line> computedLines = new ArrayList<Line>();
-        for (int i = 0; i < points.length; i++) {
-            computedLines.add(new Line(new Point(points[i]), new Point(points[(i + 1) % points.length]), 1));
+        int pointsSize = points.length;
+        for (int i = 0; i < pointsSize; i++) {
+            computedLines.add(new Line(new Point(points[i]), new Point(points[(i + 1) % pointsSize]), 1));
         }
-        Point pointTemp2 = points[1];
         points[1] = points[0];
         points[0] = pointTemp;
         return computedLines.toArray(new Line[computedLines.size()]);
@@ -40,48 +40,49 @@ public class LinePredicates {
     public static Line[] computeAllLinesFromPoints(Point[] points) {
         Collection<Line> computedLines = new ArrayList<Line>();
         points = PointPredicates.sortPoints(points);
-        for (int i = 0; i < points.length; i++) {
-            computedLines.add(new Line(new Point(points[i]), new Point(points[(i + 1) % points.length]), 1));
+        int pointsSize = points.length;
+        for (int i = 0; i < pointsSize; i++) {
+            computedLines.add(new Line(new Point(points[i]), new Point(points[(i + 1) % pointsSize]), 1));
         }
         return computedLines.toArray(new Line[computedLines.size()]);
     }
 
-    public static void calculateAndDisplayLines(Point[] trianglePoints) {
-        Line[] lines = computeAllLinesFromPoints(trianglePoints);
-
+    public static void calculateAndDisplayLines(Point[] points) {
+        Line[] lines = computeAllLinesFromPoints(points);
         for (Line numberLine : lines) {
             System.out.println(numberLine.point1.pointName + " " + numberLine.point2.pointName + ": " + numberLine.distance);
         }
     }
 
     public static Point[] findPointsFromDistanceAndFixedXCoordinate(Point point, BigDecimal distance, BigDecimal xCoordinate) {
+        BigDecimal coordinateCalculatedByDistance = new BigDecimal(
+                Math.sqrt((xCoordinate.subtract(point.xCoordinate).pow(2)).
+                        subtract(distance.pow(2)).abs().doubleValue()));
+        BigDecimal yCoordinate = point.yCoordinate;
         return new Point[]
                 {
                         new Point(xCoordinate,
-                                new BigDecimal(
-                                        Math.sqrt((xCoordinate.subtract(point.xCoordinate).pow(2)).
-                                                subtract(distance.pow(2)).abs().doubleValue())).add(point.yCoordinate)
+                                coordinateCalculatedByDistance.add(yCoordinate)
                         ),
                         new Point(xCoordinate,
-                                new BigDecimal(
-                                        Math.sqrt((xCoordinate.subtract(point.xCoordinate).pow(2)).
-                                                subtract(distance.pow(2)).abs().doubleValue())).negate()
-                                        .add(point.yCoordinate)
+                                coordinateCalculatedByDistance.negate()
+                                        .add(yCoordinate)
                         )
                 };
     }
 
-    public static Point[] findPointsFromDistanceAndFixedYCoordinate
-            (Point point, BigDecimal distance, BigDecimal yCoordinate) {
+    public static Point[] findPointsFromDistanceAndFixedYCoordinate(Point point, BigDecimal distance, BigDecimal yCoordinate) {
+        BigDecimal coordinateCalculatedByDistance = new BigDecimal(
+                Math.sqrt((yCoordinate.subtract(point.yCoordinate).pow(2)).
+                        subtract(distance.pow(2)).abs().doubleValue()));
+        BigDecimal xCoordinate = point.xCoordinate;
         return new Point[]
                 {
-                        new Point(new BigDecimal(Math.sqrt((yCoordinate.subtract(point.yCoordinate).pow(2))
-                                .subtract(distance.pow(2)).abs().doubleValue())).add(point.xCoordinate),
+                        new Point(coordinateCalculatedByDistance.add(xCoordinate),
                                 yCoordinate
 
                         ),
-                        new Point(new BigDecimal(Math.sqrt((yCoordinate.subtract(point.yCoordinate).pow(2))
-                                .subtract(distance.pow(2)).abs().doubleValue())).negate().add(point.xCoordinate),
+                        new Point(coordinateCalculatedByDistance.negate().add(xCoordinate),
                                 yCoordinate
 
                         )
@@ -104,48 +105,47 @@ public class LinePredicates {
     }
 
     public static BigDecimal calculateDistanceBetweenTwoPointsAfterTime
-            (Point startingPoint1, Point startingPoint2, Point point1Direction, Point point2Direction,
-             BigDecimal point1Velocity, BigDecimal point2Velocity, BigDecimal time) {
-        Point point1 = new Point(point1Direction);
+            (Point startingPoint1, Point startingPoint2, Point point1Direction, Point point2Direction, BigDecimal time) {
+        Point point1 = new Point(0,0);
         point1.xCoordinate = new BigDecimal
                 (point1Direction.xCoordinate.multiply(time).add(startingPoint1.xCoordinate).toString());
         point1.yCoordinate = new BigDecimal
                 (point1Direction.yCoordinate.multiply(time).add(startingPoint1.yCoordinate).toString());
-
-        Point point2 = new Point(point2Direction);
+        Point point2 = new Point(0,0);
         point2.xCoordinate = new BigDecimal
-                (point2.xCoordinate.multiply(time).add(startingPoint2.xCoordinate).toString());
+                (point2Direction.xCoordinate.multiply(time).add(startingPoint2.xCoordinate).toString());
         point2.yCoordinate = new BigDecimal
-                (point2.yCoordinate.multiply(time).add(startingPoint2.yCoordinate).toString());
+                (point2Direction.yCoordinate.multiply(time).add(startingPoint2.yCoordinate).toString());
 
         Line line = new Line(new Point(point1), new Point(point2), 1);
         return new BigDecimal(line.distance.toString());
     }
 
     public static BigDecimal calculateDistanceBetweenTwoPointsAfterTime
-            (Point startingPoint1, Point startingPoint2, Point point1Direction, Point point2Direction,
-             double point1Velocity, double point2Velocity, double time) {
+            (Point startingPoint1, Point startingPoint2, Point point1Direction, Point point2Direction, double time) {
         return calculateDistanceBetweenTwoPointsAfterTime
-                (startingPoint1, startingPoint2, point1Direction, point2Direction,
-                        new BigDecimal(point1Velocity), new BigDecimal(point2Velocity), new BigDecimal(time));
+                (startingPoint1, startingPoint2, point1Direction, point2Direction, new BigDecimal(time));
     }
 
     public static Line doubleLine(Line line) {
-        return new Line(new Point(line.point1), new Point(
-                line.point2.xCoordinate.subtract(line.point1.xCoordinate).multiply
-                        (new BigDecimal(2)).add(line.point1.xCoordinate),
-                line.point2.yCoordinate.subtract(line.point1.yCoordinate).multiply
-                        (new BigDecimal(2)).add(line.point1.yCoordinate)), 1);
+        Point point2 = line.point2;
+        Point point1 = line.point1;
+        BigDecimal xCoordinate = point1.xCoordinate;
+        BigDecimal yCoordinate = point1.yCoordinate;
+        BigDecimal multiplicand = new BigDecimal(2);
+        return new Line(new Point(point1), new Point(
+                point2.xCoordinate.subtract(xCoordinate).multiply
+                        (multiplicand).add(xCoordinate),
+                point2.yCoordinate.subtract(yCoordinate).multiply
+                        (multiplicand).add(yCoordinate)), 1);
     }
 
     public static Line createLineWithPointSlopeAndMagnitude(Point point, BigDecimal slope, BigDecimal magnitude) {
-        if (slope.equals(new BigDecimal(0))) {
+        if (slope.equals(zero)) {
             System.out.println("Slope was zero");
             return null;
         }
-        return new Line(point,
-                new Point(point.xCoordinate.add(magnitude),
-                        point.yCoordinate.add(slope.multiply(magnitude))));
+        return new Line(point, new Point(point.xCoordinate.add(magnitude), point.yCoordinate.add(slope.multiply(magnitude))));
     }
 
     public static boolean checkParallelity(Line line1, Line line2) {
@@ -172,9 +172,10 @@ public class LinePredicates {
                 xMin = new BigDecimal(point.xCoordinate.toString());
             }
         }
-        xTotal = xTotal.divide(new BigDecimal(points.length), new MathContext(SystemGlobal.CALC_PRECISION));
-        yTotal = yTotal.divide(new BigDecimal(points.length), new MathContext(SystemGlobal.CALC_PRECISION));
-        BigDecimal slope = yTotal.divide(xTotal, new MathContext(SystemGlobal.CALC_PRECISION));
+        BigDecimal pointsLengthBigDecimal = new BigDecimal(points.length);
+        xTotal = xTotal.divide(pointsLengthBigDecimal, calcPrecisionMathContext);
+        yTotal = yTotal.divide(pointsLengthBigDecimal, calcPrecisionMathContext);
+        BigDecimal slope = yTotal.divide(xTotal, calcPrecisionMathContext);
         Line midLine = createLineWithPointSlopeAndMagnitude(
                 new Point(new BigDecimal(xMin.toString()), xMin.multiply(slope)), slope, new BigDecimal(10));
         return midLine;
@@ -182,7 +183,7 @@ public class LinePredicates {
 
 
     public static Point getIntersection(Point startingPoint1, Point velocity1, Point startingPoint2, Point velocity2) {
-        Point intersection = new Point(0, 0);
+        Point intersection = null;
         boolean containsAsymptotes = containsAsymptotes(velocity1, velocity2);
 
         if (!containsAsymptotes) {
@@ -198,14 +199,14 @@ public class LinePredicates {
                         xcoordinateOfIntersection.multiply(slope1).add(coefficientFromPointAndSlope1);
                 BigDecimal yCoordinateCheck =
                         xcoordinateOfIntersection.multiply(slope2).add(coefficientFromPointAndSlope2);
-                if (!yCoordinateOfIntersection.round(new MathContext(SystemGlobal.EQUALITY_PRECISION))
-                        .equals(yCoordinateCheck.round(new MathContext(SystemGlobal.EQUALITY_PRECISION)))) {
-                    System.out.println
+                if (!yCoordinateOfIntersection.round(equalityPrecisionMathContext)
+                        .equals(yCoordinateCheck.round(equalityPrecisionMathContext))) {
+                    System.err.println
                             ("Upon getting the intersection the slope intercept form failed equivalent Y values");
                 }
                 intersection = new Point(xcoordinateOfIntersection, yCoordinateOfIntersection);
             } else {
-                System.out.println("Points do not form paths that intersect");
+                System.err.println("Points do not form paths that intersect");
             }
         } else {
             intersection = getIntersectionWithAsymptotes(startingPoint1, velocity1, startingPoint2, velocity2);
@@ -216,23 +217,29 @@ public class LinePredicates {
     private static Point getIntersectionWithAsymptotes
             (Point startingPoint1, Point velocity1, Point startingPoint2, Point velocity2) {
         boolean doesIntersect = checkIfIntersects(startingPoint1, velocity1, startingPoint2, velocity2);
-        Point intersection = new Point(0, 0);
+        Point intersection = null;
         BigDecimal xCoordinateOfIntersection = new BigDecimal(0);
         BigDecimal yCoordinateOfIntersection = new BigDecimal(0);
         if (doesIntersect) {
-            if (velocity2.xCoordinate.equals(new BigDecimal(0)) && velocity1.yCoordinate.equals(new BigDecimal(0))) {
-                xCoordinateOfIntersection = new BigDecimal(startingPoint2.xCoordinate.toString());
+            BigDecimal startingXCoordinate2 = startingPoint2.xCoordinate;
+            BigDecimal xCoordinateVel2 = velocity2.xCoordinate;
+            BigDecimal yCoordinateVel1 = velocity1.yCoordinate;
+            if (xCoordinateVel2.equals(zero) && yCoordinateVel1.equals(zero)) {
+                xCoordinateOfIntersection = new BigDecimal(startingXCoordinate2.toString());
                 yCoordinateOfIntersection = new BigDecimal(startingPoint1.yCoordinate.toString());
-            } else if (velocity1.xCoordinate.equals(new BigDecimal(0))
-                    && velocity2.yCoordinate.equals(new BigDecimal(0))) {
-                xCoordinateOfIntersection = new BigDecimal(startingPoint1.xCoordinate.toString());
-                yCoordinateOfIntersection = new BigDecimal(startingPoint2.yCoordinate.toString());
-            } else if (velocity2.xCoordinate.equals(new BigDecimal(0))) {
-                xCoordinateOfIntersection = new BigDecimal(startingPoint2.xCoordinate.toString());
-                yCoordinateOfIntersection = startingPoint1.xCoordinate.subtract
-                        (startingPoint2.xCoordinate).divide
-                        (velocity1.xCoordinate, new MathContext(SystemGlobal.CALC_PRECISION)).multiply
-                        (velocity1.yCoordinate);
+            } else {
+                BigDecimal xCoordinateVel1 = velocity1.xCoordinate;
+                if (xCoordinateVel1.equals(zero)
+                        && velocity2.yCoordinate.equals(zero)) {
+                    xCoordinateOfIntersection = new BigDecimal(startingPoint1.xCoordinate.toString());
+                    yCoordinateOfIntersection = new BigDecimal(startingPoint2.yCoordinate.toString());
+                } else if (xCoordinateVel2.equals(zero)) {
+                    xCoordinateOfIntersection = new BigDecimal(startingXCoordinate2.toString());
+                    yCoordinateOfIntersection = startingPoint1.xCoordinate.subtract
+                            (startingXCoordinate2).divide
+                            (xCoordinateVel1, calcPrecisionMathContext).multiply
+                            (yCoordinateVel1);
+                }
             }
             intersection = new Point(xCoordinateOfIntersection, yCoordinateOfIntersection);
         } else {
@@ -265,6 +272,7 @@ public class LinePredicates {
     public static boolean checkIfIntersects
             (Point startingPoint1, Point velocity1, Point startingPoint2, Point velocity2) {
         boolean futureIntersection = true;
+        //checking if they are heading towards each other is an issue because they're paths may still intersect
         boolean headingTowardsEachOther =
                 checkIfHeadingTowardsEachOther(startingPoint1, velocity1, startingPoint2, velocity2);
         if (headingTowardsEachOther) {
