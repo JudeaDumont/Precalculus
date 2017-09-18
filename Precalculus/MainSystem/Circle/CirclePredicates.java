@@ -24,7 +24,7 @@ public class CirclePredicates {
                 , line.distance.doubleValue(), DEFAULT_CIRCLE_PRECISION);
     }
 
-    public static Line getTangent(int pointIndex, Circle circle) {
+    public static Line getTangent(@SuppressWarnings("SameParameterValue") int pointIndex, Circle circle) {
         Line tangentLine = null;
         if(pointIndex >= 0 && pointIndex < circle.points.length) {
             Point pointAtIndex = circle.points[pointIndex];

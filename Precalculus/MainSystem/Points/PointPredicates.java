@@ -24,31 +24,36 @@ public class PointPredicates {
     public static Point[] sortPoints(Point[] points) {
         ArrayList<Point> swappingPoints = new ArrayList<Point>(Arrays.asList(points));
         boolean allEqual = areAllPointsEqual(points);
+        int size = swappingPoints.size();
         if (!allEqual) {
             BigDecimal max = new BigDecimal(Double.MAX_VALUE).negate();
-            for (int i = 0; i < swappingPoints.size(); i++) {
-                for (int i1 = 0; i1 < swappingPoints.size(); i1++) {
-                    if (i > i1 && swappingPoints.get(i).yCoordinate.compareTo(swappingPoints.get(i1).yCoordinate) <= 0) {
-                        if (swappingPoints.get(i).yCoordinate.compareTo(swappingPoints.get(i1).yCoordinate) == 0) {
-                            if (swappingPoints.get(i).xCoordinate.compareTo(swappingPoints.get(i1).xCoordinate) < 0) {
-                                Point temp = swappingPoints.get(i);
-                                swappingPoints.set(i, swappingPoints.get(i1));
-                                swappingPoints.set(i1, temp);
+            for (int i = 0; i < size; i++) {
+                for (int i1 = 0; i1 < size; i1++) {
+                    Point swaper = swappingPoints.get(i);
+                    Point swapy = swappingPoints.get(i1);
+                    BigDecimal swaperYCoordinate = swaper.yCoordinate;
+                    BigDecimal swapyY = swapy.yCoordinate;
+                    int swaperCompareToSwapy = swaperYCoordinate.compareTo(swapyY);
+                    if (i > i1 && swaperCompareToSwapy <= 0) {
+                        if (swaperCompareToSwapy == 0) {
+                            if (swaper.xCoordinate.compareTo(swapy.xCoordinate) < 0) {
+                                swappingPoints.set(i, swapy);
+                                swappingPoints.set(i1, swaper);
                             }
                         } else {
-                            Point temp = swappingPoints.get(i);
-                            swappingPoints.set(i, swappingPoints.get(i1));
-                            swappingPoints.set(i1, temp);
+                            swappingPoints.set(i, swapy);
+                            swappingPoints.set(i1, swaper);
                         }
                     }
                 }
-                if (swappingPoints.get(i).yCoordinate.compareTo(max) > 0) {
-                    max = new BigDecimal(swappingPoints.get(i).yCoordinate.toString());
+                BigDecimal yCoordinate = swappingPoints.get(i).yCoordinate;
+                if (yCoordinate.compareTo(max) > 0) {
+                    max = new BigDecimal(yCoordinate.toString());
                 }
             }
-            for (int i = 0; i < swappingPoints.size(); i++) {
+            for (int i = 0; i < size; i++) {
                 if (swappingPoints.get(i).yCoordinate.equals(max)) {
-                    List<Point> flip = swappingPoints.subList(i, swappingPoints.size() - 1);
+                    List<Point> flip = swappingPoints.subList(i, size - 1);
                     List<Point> flipadd = new ArrayList<>(flip);
                     swappingPoints.removeAll(flip);
                     Collections.reverse(flipadd);
@@ -57,13 +62,15 @@ public class PointPredicates {
                 }
             }
         }
-        return (swappingPoints.toArray(new Point[swappingPoints.size()]));
+        return (swappingPoints.toArray(new Point[size]));
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static boolean areAllPointsEqual(Point[] points) {
         boolean allEqual = true;
-        for (int i = 0; i < points.length; i++) {
-            if (!points[i].equals(points[(i + 1) % points.length])) {
+        int length = points.length;
+        for (int i = 0; i < length; i++) {
+            if (!points[i].equals(points[(i + 1) % length])) {
                 allEqual = false;
                 break;
             }
@@ -73,49 +80,56 @@ public class PointPredicates {
 
     public static boolean symmetricAboutXAxis(Point[] points) {
         int matches = 0;
+        int length = points.length;
         for (Point point : points) {
             for (Point point1 : points) {
                 if (point.xCoordinate.equals(point1.xCoordinate) &&
                         point.yCoordinate.equals(point1.yCoordinate.negate())) {
                     ++matches;
-                    if (matches == points.length) {
+                    if (matches == length) {
                         break;
                     }
                 }
             }
         }
-        return matches == points.length;
+        return matches == length;
     }
 
     public static Point[] getXAxisReflected(Point[] points) {
         Point[] pointsCopy = points.clone();
         ArrayList<Point> reflectedPoints = new ArrayList<Point>(Arrays.asList(pointsCopy));
-        for (int i1 = 0; i1 < reflectedPoints.size(); i1++) {
+        int size = reflectedPoints.size();
+        for (int i1 = 0; i1 < size; i1++) {
+            Point point = reflectedPoints.get(i1);
+            BigDecimal xCoord = point.xCoordinate;
+            BigDecimal yCoordNegate = point.yCoordinate.negate();
             boolean reflectionExists = doesDuplicateExist
                     (reflectedPoints,
-                            new Point(reflectedPoints.get(i1).xCoordinate,
-                                    reflectedPoints.get(i1).yCoordinate.negate()));
+                            new Point(xCoord,
+                                    yCoordNegate));
             if (!reflectionExists) {
                 reflectedPoints.add
-                        (new Point(reflectedPoints.get(i1).xCoordinate,
-                                reflectedPoints.get(i1).yCoordinate.negate()));
+                        (new Point(xCoord,
+                                yCoordNegate));
             }
         }
-        return reflectedPoints.toArray(new Point[reflectedPoints.size()]);
+        return reflectedPoints.toArray(new Point[size]);
     }
 
     public static Point[] getYAxisReflected(Point[] points) {
         Point[] pointsCopy = points.clone();
         ArrayList<Point> reflectedPoints = new ArrayList<Point>(Arrays.asList(pointsCopy));
         for (int i1 = 0; i1 < reflectedPoints.size(); i1++) {
+            BigDecimal xNegate = reflectedPoints.get(i1).xCoordinate.negate();
+            BigDecimal Y = reflectedPoints.get(i1).yCoordinate;
             boolean reflectionExists = doesDuplicateExist
                     (reflectedPoints,
-                            new Point(reflectedPoints.get(i1).xCoordinate.negate(),
-                                    reflectedPoints.get(i1).yCoordinate));
+                            new Point(xNegate,
+                                    Y));
             if (!reflectionExists) {
                 reflectedPoints.add
-                        (new Point(reflectedPoints.get(i1).xCoordinate.negate(),
-                                reflectedPoints.get(i1).yCoordinate));
+                        (new Point(xNegate,
+                                Y));
             }
         }
         return reflectedPoints.toArray(new Point[reflectedPoints.size()]);
@@ -125,14 +139,17 @@ public class PointPredicates {
         Point[] pointsCopy = points.clone();
         ArrayList<Point> reflectedPoints = new ArrayList<Point>(Arrays.asList(pointsCopy));
         for (int i1 = 0; i1 < reflectedPoints.size(); i1++) {
+            Point point = reflectedPoints.get(i1);
+            BigDecimal xNegate = point.xCoordinate.negate();
+            BigDecimal yNegate = point.yCoordinate.negate();
             boolean reflectionExists = doesDuplicateExist
                     (reflectedPoints,
-                            new Point(reflectedPoints.get(i1).xCoordinate.negate(),
-                                    reflectedPoints.get(i1).yCoordinate.negate()));
+                            new Point(xNegate,
+                                    yNegate));
             if (!reflectionExists) {
                 reflectedPoints.add
-                        (new Point(reflectedPoints.get(i1).xCoordinate.negate(),
-                                reflectedPoints.get(i1).yCoordinate.negate()));
+                        (new Point(xNegate,
+                                yNegate));
             }
         }
         return reflectedPoints.toArray(new Point[reflectedPoints.size()]);
@@ -143,7 +160,7 @@ public class PointPredicates {
         for (int i = 0; i < reflectedPoints.size(); i++) {
             if (reflectedPoints.get(i).equals(obj)) {
                 reflectionExists = true;
-                i = reflectedPoints.size();
+                break;
             }
         }
         return reflectionExists;
@@ -193,54 +210,64 @@ public class PointPredicates {
         return true;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] sortPointsByXThenY(Point[] points) {
         ArrayList<Point> swappingPoints = new ArrayList<Point>(Arrays.asList(points));
-        for (int i = 0; i < swappingPoints.size(); i++) {
-            for (int i1 = 0; i1 < swappingPoints.size(); i1++) {
-                if (i > i1 && swappingPoints.get(i).xCoordinate.compareTo(swappingPoints.get(i1).xCoordinate) <= 0) {
-                    if (swappingPoints.get(i).xCoordinate.compareTo(swappingPoints.get(i1).xCoordinate) == 0) {
-                        if (swappingPoints.get(i).yCoordinate.compareTo(swappingPoints.get(i1).yCoordinate) < 0) {
-                            Point temp = swappingPoints.get(i);
-                            swappingPoints.set(i, swappingPoints.get(i1));
-                            swappingPoints.set(i1, temp);
+        int size = swappingPoints.size();
+        for (int i = 0; i < size; i++) {
+            for (int i1 = 0; i1 < size; i1++) {
+                Point point = swappingPoints.get(i);
+                BigDecimal xCoordinate = point.xCoordinate;
+                Point point1 = swappingPoints.get(i1);
+                BigDecimal xCoordinate1 = point1.xCoordinate;
+                int xCoordComparison = xCoordinate.compareTo(xCoordinate1);
+                if (i > i1 && xCoordComparison <= 0) {
+                    if (xCoordComparison == 0) {
+                        if (point.yCoordinate.compareTo(point1.yCoordinate) < 0) {
+                            swappingPoints.set(i, point1);
+                            swappingPoints.set(i1, point);
                         }
                     } else {
-                        Point temp = swappingPoints.get(i);
-                        swappingPoints.set(i, swappingPoints.get(i1));
-                        swappingPoints.set(i1, temp);
+                        swappingPoints.set(i, point1);
+                        swappingPoints.set(i1, point);
                     }
                 }
             }
         }
-        return swappingPoints.toArray(new Point[swappingPoints.size()]);
+        return swappingPoints.toArray(new Point[size]);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] sortPointsByX(Point[] points) {
         ArrayList<Point> swappingPoints = new ArrayList<Point>(Arrays.asList(points));
-        for (int i = 0; i < swappingPoints.size(); i++) {
-            for (int i1 = 0; i1 < swappingPoints.size(); i1++) {
-                if (i > i1 && swappingPoints.get(i).xCoordinate.compareTo(swappingPoints.get(i1).xCoordinate) < 0) {
-                    Point temp = swappingPoints.get(i);
-                    swappingPoints.set(i, swappingPoints.get(i1));
-                    swappingPoints.set(i1, temp);
+        int size = swappingPoints.size();
+        for (int i = 0; i < size; i++) {
+            for (int i1 = 0; i1 < size; i1++) {
+                Point point = swappingPoints.get(i);
+                Point point1 = swappingPoints.get(i1);
+                if (i > i1 && point.xCoordinate.compareTo(point1.xCoordinate) < 0) {
+                    swappingPoints.set(i, point1);
+                    swappingPoints.set(i1, point);
                 }
             }
         }
-        return swappingPoints.toArray(new Point[swappingPoints.size()]);
+        return swappingPoints.toArray(new Point[size]);
     }
 
     public static Line[] getLinesOfAllPointsSortedByXCoordinatesThenYCoordinates(Point[] points) {
         Point[] sortedPoints = sortPointsByXThenY(points);
-        return LinePredicates.computeAllLinesFromPoints(sortedPoints);
+        return LinePredicates.computeAllLinesAndSortPoints(sortedPoints);
     }
 
     public static Point getMaximumPoint(Point[] points) {
         BigDecimal max = new BigDecimal(-Double.MAX_VALUE);
-        Point maxPoint = new Point(0, 0);
+        Point maxPoint = null;
         for (int i = 0; i < points.length; i++) {
-            if (points[i].xCoordinate.add(points[i].yCoordinate).compareTo(max) > 0) {
-                max = points[i].xCoordinate.add(points[i].yCoordinate);
-                maxPoint = points[i];
+            Point point = points[i];
+            BigDecimal coordSum = point.xCoordinate.add(point.yCoordinate);
+            if (coordSum.compareTo(max) > 0) {
+                max = coordSum;
+                maxPoint = point;
             }
         }
         return maxPoint;
@@ -248,11 +275,13 @@ public class PointPredicates {
 
     public static Point getMinimumPoint(Point[] points) {
         BigDecimal min = new BigDecimal(Double.MAX_VALUE);
-        Point minPoint = new Point(0, 0);
+        Point minPoint = null;
         for (int i = 0; i < points.length; i++) {
-            if (points[i].xCoordinate.add(points[i].yCoordinate).compareTo(min) < 0) {
-                min = points[i].xCoordinate.add(points[i].yCoordinate);
-                minPoint = points[i];
+            Point point = points[i];
+            BigDecimal coordSum = point.xCoordinate.add(point.yCoordinate);
+            if (coordSum.compareTo(min) < 0) {
+                min = coordSum;
+                minPoint = point;
             }
         }
         return minPoint;
@@ -262,9 +291,11 @@ public class PointPredicates {
         Point[] pointsSortedByX = sortPointsByX(points);
         ArrayList<Point> maximas = new ArrayList<Point>();
         for (int i = 1; i < pointsSortedByX.length - 1; i++) {
-            if (pointsSortedByX[i].yCoordinate.compareTo(pointsSortedByX[i - 1].yCoordinate) > 0 &&
-                    pointsSortedByX[i].yCoordinate.compareTo(pointsSortedByX[i + 1].yCoordinate) > 0) {
-                maximas.add(pointsSortedByX[i]);
+            Point point = pointsSortedByX[i];
+            BigDecimal yCoordinate = point.yCoordinate;
+            if (yCoordinate.compareTo(pointsSortedByX[i - 1].yCoordinate) > 0 &&
+                    yCoordinate.compareTo(pointsSortedByX[i + 1].yCoordinate) > 0) {
+                maximas.add(point);
             }
         }
         return maximas.toArray(new Point[maximas.size()]);
@@ -274,9 +305,11 @@ public class PointPredicates {
         Point[] pointsSortedByX = sortPointsByX(points);
         ArrayList<Point> minimas = new ArrayList<Point>();
         for (int i = 1; i < pointsSortedByX.length - 1; i++) {
-            if (pointsSortedByX[i].yCoordinate.compareTo(pointsSortedByX[i - 1].yCoordinate) < 0 &&
-                    pointsSortedByX[i].yCoordinate.compareTo(pointsSortedByX[i + 1].yCoordinate) < 0) {
-                minimas.add(pointsSortedByX[i]);
+            Point point = pointsSortedByX[i];
+            BigDecimal yCoordinate = point.yCoordinate;
+            if (yCoordinate.compareTo(pointsSortedByX[i - 1].yCoordinate) < 0 &&
+                    yCoordinate.compareTo(pointsSortedByX[i + 1].yCoordinate) < 0) {
+                minimas.add(point);
             }
         }
         return minimas.toArray(new Point[minimas.size()]);
@@ -284,25 +317,26 @@ public class PointPredicates {
 
     public static Point[] correctPointSize(Point[] points, int correctSizeOfPoints) {
         Point[] fullPoints = new Point[correctSizeOfPoints];
-        if (points.length > 0) {
-            if (points.length >= fullPoints.length) {
+        int length = points.length;
+        int length1 = fullPoints.length;
+        if (length > 0) {
+            if (length >= length1) {
                 //If the points passed in are equal to or greater than
                 // the number of points that are supposed to be in the shape, subset them
-                fullPoints =
-                        (Arrays.asList(points).subList(0, fullPoints.length)).toArray(new Point[fullPoints.length]);
+                fullPoints = (Arrays.asList(points).subList(0, length1)).toArray(new Point[length1]);
             } else {
                 //If the number of points passed in is less than the number that are supposed to be there for a
                 // particular shape, we add the ones that are there and fill the rest with (0,0)
-                for (int pointIndex = 0; pointIndex < points.length; pointIndex++) {
+                for (int pointIndex = 0; pointIndex < length; pointIndex++) {
                     fullPoints[pointIndex] = points[pointIndex];
                 }
-                for (int pointIndex = points.length; pointIndex < fullPoints.length; pointIndex++) {
+                for (int pointIndex = length; pointIndex < length1; pointIndex++) {
                     fullPoints[pointIndex] = new Point(0, 0);
                 }
             }
         } else {
             //There are no points, we fill the shape with (0,0)
-            for (int i = 0; i < fullPoints.length; i++) {
+            for (int i = 0; i < length1; i++) {
                 fullPoints[i] = new Point(0, 0);
             }
         }
@@ -310,8 +344,9 @@ public class PointPredicates {
     }
 
     public static Point[] transformPoints(Point[] points, Function<Point, Point> pointBasedMethod) {
-        Point[] transformedPoints = new Point[points.length];
-        for (int i = 0; i < points.length; i++) {
+        int length = points.length;
+        Point[] transformedPoints = new Point[length];
+        for (int i = 0; i < length; i++) {
             transformedPoints[i] = pointBasedMethod.apply(points[i]);
         }
         return transformedPoints;

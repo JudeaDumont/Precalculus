@@ -6,29 +6,33 @@ import MainSystem.Points.Point;
 /**
  * Created by Owner on 7/18/2017.
  */
+@SuppressWarnings("WeakerAccess")
 public class SquarePredicates {
 
-    public static Rectangle deriveContainingSquareFromCircle(Circle derivedCircle) {
+    public static Rectangle deriveContainingDiamondFromCircle(Circle derivedCircle) {
+        double derivedCircleXCoord = derivedCircle.center.xCoordinate.doubleValue();
+        double derivedCircleYCoord = derivedCircle.center.yCoordinate.doubleValue();
+        double derivedCircleRadius = derivedCircle.radius;
         return Rectangle.createInstance(
                 new Point[]
                         {
                                 new Point(
-                                        derivedCircle.center.xCoordinate.doubleValue() + derivedCircle.radius,
-                                        derivedCircle.center.yCoordinate.doubleValue() + derivedCircle.radius
+                                        derivedCircleXCoord + derivedCircleRadius,
+                                        derivedCircleYCoord + derivedCircleRadius
                                 ),
                                 new Point(
-                                        derivedCircle.center.xCoordinate.doubleValue() + derivedCircle.radius,
-                                        derivedCircle.center.yCoordinate.doubleValue() - derivedCircle.radius
-                                ),
-                                new Point(
-
-                                        derivedCircle.center.xCoordinate.doubleValue() - derivedCircle.radius,
-                                        derivedCircle.center.yCoordinate.doubleValue() + derivedCircle.radius
+                                        derivedCircleXCoord + derivedCircleRadius,
+                                        derivedCircleYCoord - derivedCircleRadius
                                 ),
                                 new Point(
 
-                                        derivedCircle.center.xCoordinate.doubleValue() - derivedCircle.radius,
-                                        derivedCircle.center.yCoordinate.doubleValue() - derivedCircle.radius
+                                        derivedCircleXCoord - derivedCircleRadius,
+                                        derivedCircleYCoord + derivedCircleRadius
+                                ),
+                                new Point(
+
+                                        derivedCircleXCoord - derivedCircleRadius,
+                                        derivedCircleYCoord - derivedCircleRadius
                                 )
                         }
         );

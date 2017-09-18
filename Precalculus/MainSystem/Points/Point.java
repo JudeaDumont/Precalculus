@@ -62,11 +62,4 @@ public class Point {
         BigDecimal yCoordinate = new BigDecimal(Double.toString(Math.sin(Math.toRadians(angle)) * radius));
         return new Point(xCoordinate.add(centerOfRotation.xCoordinate), yCoordinate.add(centerOfRotation.yCoordinate));
     }
-
-
-
-
-    public void display() {
-        System.out.println(this.toString());
-    }
 }

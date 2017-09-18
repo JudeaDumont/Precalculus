@@ -6,7 +6,9 @@ import MainSystem.Points.Point;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+@SuppressWarnings("WeakerAccess")
 public class FunctionPredicates {
+    @SuppressWarnings("WeakerAccess")
     public static Point[] constantFunction(BigDecimal[] domainValues, BigDecimal constant) {
         Point[] rangePoints = new Point[domainValues.length];
         for (int i = 0; i < domainValues.length; i++) {
@@ -15,6 +17,7 @@ public class FunctionPredicates {
         return rangePoints;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] identityFunction(BigDecimal[] domainValues) {
         Point[] rangePoints = new Point[domainValues.length];
         for (int i = 0; i < domainValues.length; i++) {
@@ -23,6 +26,7 @@ public class FunctionPredicates {
         return rangePoints;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] squareFunction(BigDecimal[] domainValues) {
         Point[] rangePoints = new Point[domainValues.length];
         for (int i = 0; i < domainValues.length; i++) {
@@ -31,6 +35,7 @@ public class FunctionPredicates {
         return rangePoints;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] cubeFunction(BigDecimal[] domainValues) {
         Point[] rangePoints = new Point[domainValues.length];
         for (int i = 0; i < domainValues.length; i++) {
@@ -39,6 +44,7 @@ public class FunctionPredicates {
         return rangePoints;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] squareRootFunction(BigDecimal[] domainValues) {
         Point[] rangePoints = new Point[domainValues.length];
         for (int i = 0; i < domainValues.length; i++) {
@@ -47,6 +53,7 @@ public class FunctionPredicates {
         return rangePoints;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] recipricolFunction(BigDecimal[] domainValues) {
         Point[] rangePoints = new Point[domainValues.length];
         for (int i = 0; i < domainValues.length; i++) {
@@ -55,6 +62,7 @@ public class FunctionPredicates {
         return rangePoints;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] absoluteFunction(BigDecimal[] domainValues) {
         Point[] rangePoints = new Point[domainValues.length];
         for (int i = 0; i < domainValues.length; i++) {
@@ -63,6 +71,7 @@ public class FunctionPredicates {
         return rangePoints;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] cubeRootFunction(BigDecimal[] domainValues) {
         Point[] rangePoints = new Point[domainValues.length];
         for (int i = 0; i < domainValues.length; i++) {
@@ -192,6 +201,7 @@ public class FunctionPredicates {
         return shiftGraph(pointsBeforeTransorfmation, new BigDecimal(horizontalShift), new BigDecimal(verticalShift));
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] shiftGraph(Point[] pointsBeforeTransorfmation, BigDecimal horizontalShift, BigDecimal verticalShift) {
         for (int i = 0; i < pointsBeforeTransorfmation.length; i++) {
             pointsBeforeTransorfmation[i].xCoordinate = pointsBeforeTransorfmation[i].xCoordinate.add(horizontalShift);
@@ -204,6 +214,7 @@ public class FunctionPredicates {
         return expandGraph(pointsBeforeTransorfmation, new BigDecimal(horizontalExpansion), new BigDecimal(verticalExpansion));
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Point[] expandGraph(Point[] pointsBeforeTransorfmation, BigDecimal horizontalExpansion, BigDecimal verticalExpansion) {
         for (int i = 0; i < pointsBeforeTransorfmation.length; i++) {
             pointsBeforeTransorfmation[i].xCoordinate = pointsBeforeTransorfmation[i].xCoordinate.multiply(horizontalExpansion);
@@ -211,6 +222,4 @@ public class FunctionPredicates {
         }
         return pointsBeforeTransorfmation;
     }
-
-
 }

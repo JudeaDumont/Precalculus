@@ -27,3 +27,5 @@ The line intersection function in point predicates needs to be refactored into a
 velocity unaffected by gravity is called a ray and may be sotred and utilized as such
 
 The entire project needs to be checked for good aliasing
+
+Organize Tests Better, where one entity of the code is tested very well for edge cases

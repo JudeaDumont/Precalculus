@@ -17,7 +17,9 @@ public class Line {
     public BigDecimal distance;
     public BigDecimal slope = new BigDecimal(0);
     //On a number line the scale is usually the distance between 0 and one
+    @SuppressWarnings("WeakerAccess")
     public BigDecimal segmentScalar = new BigDecimal(1);
+    @SuppressWarnings("WeakerAccess")
     public double calcDistance(Point point1, Point point2) {
         double distance = 0;
         try {
@@ -39,21 +41,23 @@ public class Line {
         this.segmentScalar = segmentScalar;
         this.distance = new BigDecimal(calcDistance(this.point1, this.point2));
         this.slope = new BigDecimal(calcSlope(this.point1, this.point2).toString());
-        this.lineType = (slope.equals(new BigDecimal(0))
+        this.lineType = (slope.equals(zero)
                 ? (point1.xCoordinate.equals(point2.xCoordinate)
                 ? LineType.Vertical : LineType.Horizontal) : LineType.Diagonal);
     }
 
     private BigDecimal calcSlope(Point point1, Point point2) {
         try {
-            return !point1.xCoordinate.equals(point2.xCoordinate) &&
-                    !point1.yCoordinate.equals(point2.yCoordinate) ? (
-                            point2.yCoordinate.subtract(point1.yCoordinate)
-                            .divide(point2.xCoordinate.subtract(point1.xCoordinate)
+            BigDecimal xCoordinate1 = point1.xCoordinate;
+            BigDecimal yCoordinate1 = point1.yCoordinate;
+            BigDecimal yCoordinate2 = point2.yCoordinate;
+            BigDecimal xCoordinate2 = point2.xCoordinate;
+            return !xCoordinate1.equals(xCoordinate2) &&
+                    !yCoordinate1.equals(yCoordinate2) ? (
+                            yCoordinate2.subtract(yCoordinate1)
+                            .divide(xCoordinate2.subtract(xCoordinate1)
                                     , calcPrecisionMathContext)) : new BigDecimal(0);
-        } catch (Exception ex) {
-
-        }
+        } catch (Exception ex) {}
         return new BigDecimal(0);
     }
 
@@ -86,11 +90,12 @@ public class Line {
                 point1.yCoordinate.add(point2.yCoordinate).divide(divisor, calcPrecisionMathContext));
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public Point getXIntercept() {
         Point xIntercept = null;
         BigDecimal point1XCoordinate = point1.xCoordinate;
-        int x1NegOrPos = point1XCoordinate.compareTo(zero);
         BigDecimal point2XCoordinate = point2.xCoordinate;
+        int x1NegOrPos = point1XCoordinate.compareTo(zero);
         int x2NegOrPos = point2XCoordinate.compareTo(zero);
         if (x1NegOrPos <= 0 && x2NegOrPos >= 0
                 || x1NegOrPos >= 0 && x2NegOrPos <= 0) {
@@ -103,6 +108,7 @@ public class Line {
         return xIntercept;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public Point getYIntercept() {
         Point yIntercept = null;
         BigDecimal point1YCoordinate = point1.yCoordinate;

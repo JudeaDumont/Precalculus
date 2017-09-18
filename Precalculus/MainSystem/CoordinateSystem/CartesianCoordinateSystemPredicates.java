@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 /**
  * Created by Owner on 7/13/2017.
  */
+@SuppressWarnings("WeakerAccess")
 public class CartesianCoordinateSystemPredicates {
     public static Quadrant getQuadrantFromPoint(Point point) {
         Quadrant quadrant = null;

@@ -28,7 +28,8 @@ public class Square extends Rectangle {
         Point[] modPoints = new Point[points.length];
 
         for (int i = 0; i < points.length; i++) {
-            modPoints[i] = new Point(points[i].xCoordinate.subtract(difference.xCoordinate), points[i].yCoordinate.subtract(difference.yCoordinate));
+            modPoints[i] = new Point(points[i].xCoordinate.subtract(difference.xCoordinate),
+                    points[i].yCoordinate.subtract(difference.yCoordinate));
         }
 
         double angle = AnglePredicates.getAngleFromPoint(modPoints[1]);
@@ -36,8 +37,9 @@ public class Square extends Rectangle {
 
         for (int i = 0; i < modPoints.length; i++) {
             double radius = new Line(modPoints[0], modPoints[i]).distance.doubleValue();
-            BigDecimal xCoordinate = new BigDecimal(Double.toString(Math.cos(Math.toRadians(angleOfChange)) * radius));
-            BigDecimal yCoordinate = new BigDecimal(Double.toString(Math.sin(Math.toRadians(angleOfChange)) * radius));
+            double radiansOfChange = Math.toRadians(angleOfChange);
+            BigDecimal xCoordinate = new BigDecimal(Double.toString(Math.cos(radiansOfChange) * radius));
+            BigDecimal yCoordinate = new BigDecimal(Double.toString(Math.sin(radiansOfChange) * radius));
             uprightPoints[i] = new Point(xCoordinate, yCoordinate);
         }
         return uprightPoints;
@@ -70,17 +72,21 @@ public class Square extends Rectangle {
         BigDecimal minX = new BigDecimal(Double.MAX_VALUE);
         BigDecimal minY = new BigDecimal(Double.MAX_VALUE);
         for (Point point1 : uprightPoints) {
-            if (point1.xCoordinate.compareTo(maxX) > 0) {
-                maxX = new BigDecimal(point1.xCoordinate.toString());
+            BigDecimal xCoordinate = point1.xCoordinate;
+            BigDecimal yCoordinate = point1.yCoordinate;
+            String xString = xCoordinate.toString();
+            String yString = yCoordinate.toString();
+            if (xCoordinate.compareTo(maxX) > 0) {
+                maxX = new BigDecimal(xString);
             }
-            if (point1.yCoordinate.compareTo(maxY) > 0) {
-                maxY = new BigDecimal(point1.yCoordinate.toString());
+            if (yCoordinate.compareTo(maxY) > 0) {
+                maxY = new BigDecimal(yString);
             }
-            if (point1.xCoordinate.compareTo(minX) < 0) {
-                minX = new BigDecimal(point1.xCoordinate.toString());
+            if (xCoordinate.compareTo(minX) < 0) {
+                minX = new BigDecimal(xString);
             }
-            if (point1.yCoordinate.compareTo(minY) < 0) {
-                minY = new BigDecimal(point1.yCoordinate.toString());
+            if (yCoordinate.compareTo(minY) < 0) {
+                minY = new BigDecimal(yString);
             }
         }
         point = new Point(point.xCoordinate.subtract(difference.xCoordinate), point.yCoordinate.subtract(difference.yCoordinate));

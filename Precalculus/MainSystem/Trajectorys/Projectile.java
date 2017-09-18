@@ -9,7 +9,10 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.function.Function;
 
+import static MainSystem.GlobalSystem.SystemGlobal.XAXISRESISTANCE_CONSTANT;
+
 public class Projectile {
+    @SuppressWarnings("CanBeFinal")
     public Shape trajectedObject = new Shape(new Point[]{}) {
         @Override
         public String getShapeType() {
@@ -31,7 +34,9 @@ public class Projectile {
             return false;
         }
     };
+    @SuppressWarnings("WeakerAccess")
     public ProjectileMotion projectileMotion = null;
+    @SuppressWarnings("WeakerAccess")
     public BigDecimal xVertex = null;
 
     public Projectile(Point[] points, BigDecimal accelerationDueToGravity, BigDecimal time, Point startingVelocity) {
@@ -44,6 +49,7 @@ public class Projectile {
         initializeProjectile(accelerationDueToGravity, time, startingVelocity);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Projectile(Projectile projectile) {
         trajectedObject.points = new Point[projectile.trajectedObject.points.length];
         for (int i = 0; i < trajectedObject.points.length; i++) {
@@ -76,9 +82,10 @@ public class Projectile {
             }
         }
         projectileMotion.xAxisResistance = xAxisResistance;
-        xVertex = deriveVertex(xAxisResistance.multiply(new BigDecimal(SystemGlobal.XAXISRESISTANCE_CONSTANT)), velocityXCoordinate);
+        xVertex = deriveVertex(xAxisResistance.multiply(new BigDecimal(XAXISRESISTANCE_CONSTANT)), velocityXCoordinate);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public BigDecimal deriveVertex(BigDecimal resistance, BigDecimal velocity)
     {
         return velocity.divide(resistance.multiply(new BigDecimal(2)), new MathContext(SystemGlobal.CALC_PRECISION)).negate();
@@ -104,29 +111,29 @@ public class Projectile {
             }
         }
         if (!belowZero) {
-            BigDecimal velocityXCoordinate = projectileMotion.startingVelocity.xCoordinate;
-
-            BigDecimal yCoordinateVelocity = projectileMotion.startingVelocity.yCoordinate;
-            if (yCoordinateVelocity.compareTo(zero) > 0 ||
-                    (yCoordinateVelocity.compareTo(zero) < 0 && !onXPlane)) {
+            BigDecimal velocityXCoord = projectileMotion.startingVelocity.xCoordinate;
+            BigDecimal velocityYCoord = projectileMotion.startingVelocity.yCoordinate;
+            if (velocityYCoord.compareTo(zero) > 0 ||
+                    (velocityYCoord.compareTo(zero) < 0 && !onXPlane)) {
                 pointsOfTrajectory = projectileAfterTime.trajectedObject.points = PointPredicates.transformPoints(pointsOfTrajectory, new Function<Point, Point>() {
                     @Override
                     public Point apply(Point point) {
                         BigDecimal timeOfProjectileAfterEjection = projectileMotion.time;
+                        boolean timeIsAfterXVertex = timeOfProjectileAfterEjection.compareTo(xVertex) <= 0;
                         return new Point(
 
-                                new BigDecimal(SystemGlobal.XAXISRESISTANCE_CONSTANT).multiply(
+                                new BigDecimal(XAXISRESISTANCE_CONSTANT).multiply(
                                         projectileMotion.xAxisResistance.multiply(
-                                                (timeOfProjectileAfterEjection.compareTo(xVertex)<=0?timeOfProjectileAfterEjection:xVertex).pow(2)
+                                                (timeIsAfterXVertex ?timeOfProjectileAfterEjection:xVertex).pow(2)
                                         )).add(
-                                        velocityXCoordinate.multiply(timeOfProjectileAfterEjection.compareTo(xVertex)<=0?timeOfProjectileAfterEjection:xVertex)
+                                        velocityXCoord.multiply(timeIsAfterXVertex ?timeOfProjectileAfterEjection:xVertex)
                                 ).add(point.xCoordinate),
 
                                 new BigDecimal(SystemGlobal.GRAVITY_CONSTANT).multiply(
                                         projectileMotion.accelerationDueToGravity.multiply(
                                                 timeOfProjectileAfterEjection.pow(2)
                                         )).add(
-                                        yCoordinateVelocity.multiply(timeOfProjectileAfterEjection)
+                                        velocityYCoord.multiply(timeOfProjectileAfterEjection)
                                 ).add(point.yCoordinate)
                         );
                     }

@@ -1,5 +1,7 @@
 package MainSystem.GlobalSystem;
 
+import MainSystem.Points.Point;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.Locale;
@@ -22,7 +24,8 @@ public class SystemGlobal {
     public static final double XAXISRESISTANCE_CONSTANT = Double.parseDouble(ResourceBundle.getBundle("MainSystem.GlobalSystem.SystemGlobal", Locale.getDefault())
             .getString("System.XAxisResistance"));
 
-    public static BigDecimal zero = new BigDecimal(0);
-    public static MathContext calcPrecisionMathContext = new MathContext(SystemGlobal.CALC_PRECISION);
-    public static MathContext equalityPrecisionMathContext = new MathContext(SystemGlobal.EQUALITY_PRECISION);
+    public static final BigDecimal zero = new BigDecimal(0);
+    public static final MathContext calcPrecisionMathContext = new MathContext(SystemGlobal.CALC_PRECISION);
+    public static final MathContext equalityPrecisionMathContext = new MathContext(SystemGlobal.EQUALITY_PRECISION);
+    public static final Point zeroPoint = new Point(0, 0);
 }

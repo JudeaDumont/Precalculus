@@ -26,9 +26,4 @@ public class RectangleConcrete extends Rectangle {
     public boolean pointInShape(Point point) {
         return false;
     }
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }

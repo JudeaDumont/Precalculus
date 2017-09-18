@@ -2,6 +2,8 @@ package MainSystem.Triangles;
 
 import MainSystem.Points.Point;
 
+import java.math.BigDecimal;
+
 public class ScaleneTriangle extends Triangle {
 
     ScaleneTriangle(Point[] points) {
@@ -16,7 +18,7 @@ public class ScaleneTriangle extends Triangle {
 
     @Override
     public void calcShapeArea() {
-
+        this.area = new BigDecimal(0);
     }
 
     @Override

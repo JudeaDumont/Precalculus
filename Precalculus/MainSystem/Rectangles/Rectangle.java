@@ -11,7 +11,7 @@ public abstract class Rectangle extends Shape {
 
     public static Rectangle createInstance(Point[] points) {
         Rectangle rectangle = null;
-        RectangleShapeType type = RectanglePredicates.determineRectangleType(LinePredicates.computeAllLinesFromPoints(points));
+        RectangleShapeType type = RectanglePredicates.determineRectangleType(LinePredicates.computeAllLinesAndSortPoints(points));
         switch (type) {
             case Square:
                 rectangle = new Square(points);
@@ -61,10 +61,5 @@ public abstract class Rectangle extends Shape {
             }
         }
         return diags.toArray(new Line[diags.size()]);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 }

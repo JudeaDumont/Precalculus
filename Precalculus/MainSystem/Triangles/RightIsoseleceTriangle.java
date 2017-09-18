@@ -23,9 +23,12 @@ public class RightIsoseleceTriangle extends Triangle {
     @Override
     public void calcShapeArea() {
         BigDecimal[] lengths = LinePredicates.getLineLengths(lines);
-        area = lengths[0].multiply(lengths[1]).divide(new BigDecimal(2)
-                , new MathContext(lengths[0].multiply(lengths[1]).divide
-                        (new BigDecimal(2)).toBigInteger().toString().length() + EQUALITY_PRECISION));
+        BigDecimal length0 = lengths[0];
+        BigDecimal length1 = lengths[1];
+        BigDecimal divisor = new BigDecimal(2);
+        area = length0.multiply(length1).divide(divisor
+                , new MathContext(length0.multiply(length1).divide
+                        (divisor).toBigInteger().toString().length() + EQUALITY_PRECISION));
     }
 
     @Override
@@ -35,6 +38,6 @@ public class RightIsoseleceTriangle extends Triangle {
 
     @Override
     public boolean pointInShape(Point point) {
-        return false;
+        return RightTrianglePredicates.pointInRightTriangle(point, this.points);
     }
 }

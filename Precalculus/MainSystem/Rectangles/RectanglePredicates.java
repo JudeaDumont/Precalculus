@@ -5,6 +5,7 @@ import MainSystem.Lines.LinePredicates;
 
 import java.math.BigDecimal;
 
+@SuppressWarnings("WeakerAccess")
 public class RectanglePredicates {
     public static RectangleShapeType determineRectangleType(Line[] lines) {
         RectangleShapeType type = null;

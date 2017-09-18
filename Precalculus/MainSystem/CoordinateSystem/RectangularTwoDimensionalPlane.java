@@ -5,7 +5,9 @@ import MainSystem.Points.Point;
 
 import java.math.BigDecimal;
 
+@SuppressWarnings("WeakerAccess")
 public class RectangularTwoDimensionalPlane {
+    @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
     public TwoDimensionalPlane twoDimensionalPlane = new TwoDimensionalPlane
             (
                     new Line(new Point(0, 0), new Point(0, 0), 1),

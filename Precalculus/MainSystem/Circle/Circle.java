@@ -43,6 +43,7 @@ public class Circle extends MainSystem.GlobalSystem.Shape {
                 PointPredicates.getPointString(points);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Point[] getPointsOfACircle(long precision) {
         ArrayList<Point> circlePoints = new ArrayList<>();
         for (long i = 0; i < precision; i++) {

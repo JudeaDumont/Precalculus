@@ -7,11 +7,12 @@ import MainSystem.Points.PointPredicates;
 
 public abstract class Triangle extends MainSystem.GlobalSystem.Shape {
     //Factory Method
+    @SuppressWarnings("WeakerAccess")
     public TriangleShapeType type;
 
     public static Triangle createInstance(Point[] threePoints) {
         threePoints = PointPredicates.correctPointSize(threePoints, 3);
-        TriangleShapeType type = TrianglePredicates.determineTriangleType(LinePredicates.computeAllLinesFromPoints(threePoints));
+        TriangleShapeType type = TrianglePredicates.determineTriangleType(LinePredicates.computeAllLinesAndSortPoints(threePoints));
         Triangle specificTriangle = null;
         switch (type) {
             case Equalateral:
@@ -40,16 +41,18 @@ public abstract class Triangle extends MainSystem.GlobalSystem.Shape {
 
     @Override
     public String toString() {
-        return PointPredicates.getPointString(this.points) + "\n" + this.area.toString();
+        return PointPredicates.getPointString(this.points) + "\nArea: " + this.area.toString() + "\nShapeType: " + this.getShapeType();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Line[] getMeridians() {
         Line[] meridians = new Line[3];
 
         for (int i = 0; i < lines.length; i++) {
             for (Point point : points) {
-                if (!point.equals(lines[i].point1) && !point.equals(lines[i].point2)) {
-                    meridians[i] = new Line(point, lines[i].getMidPoint(), 0);
+                Line linesI = lines[i];
+                if (!point.equals(linesI.point1) && !point.equals(linesI.point2)) {
+                    meridians[i] = new Line(point, linesI.getMidPoint());
                 }
             }
         }
