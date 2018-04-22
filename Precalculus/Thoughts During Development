@@ -1,0 +1,81 @@
+No shapes can be defined unless there is a cartesian coordinate system to define them within
+- Default cartesian coordinate system? Yes
+Axises can be defined from points other than vertical or horizontal relativity
+
+The outer edge of the display should be defined by the max and min points of the containing shapes? or by the cartesian coordinate system?
+
+ - The cartesian coordinate system
+
+The test scenarios within the test directory can be data producers, such that they feed the UI, Integration of Kotlin would be next.
+
+Rather than having the drawing area stretch or shrink to fit. It simply provides a window as is for the view box.
+
+The viewbox will stretch and shrink to fit. For instance.
+
+in a drawing area of 800, 500
+
+an area of 8000 by 5000 may be displayed as a result of the viewbox dimensions.
+
+To utilize the curves, the shape can be determined by its type and curvature derived.
+
+After creating a shape, it shows up in the list, including its center point
+A list of shapes, points, lines, etc can be selected and edited within the gui via right click. even changing of the points
+
+Mouse coordinates are displayed on the screen
+
+What about fish lens? or different perspective orientations besides rectangular viewbox?
+
+for a viewbox. it depends on the line and where it intersects with the viewbox boundary.
+
+imagine a line being draw that is cut off at both the starting and ending points, but the middle section is seen.
+
+How could such a line be detected?
+
+the point would still need to be translated as proportional to the viewbox
+
+Make it so the drawing area is movable. put a selectable gray line border.
+
+This would decouple the drawing area from the rest of the window.
+
+Locking the drawing area to the whole window can be an option, as well as locking the drawing area to some fraction of the window
+
+This would also be true of other drawing areas, to where one drawing area takes up half of the window etc etc
+
+Stretch/shrink to fit to largest coordinate would also be good
+
+Should it stretch in perfect rectangularity? |-x| == x?
+
+or |-x| != x?
+
+Memory allocation overhead needs to be considered when revising the code, to new or not to new
+
+Why is it that creating a circle with higher and higher radii doesn't register scaling correctly?
+
+Why is it that upon forcing scaling to a massive proportion does the scaling reflect something expected?
+
+There should never be a point that is entered that cannot be seen with the current setup, which is viewbox locked to bounding coordinates.
+
+C c 0 0 50000 2
+
+C cp
+
+P
+
+Command
+
+Command1
+
+
+                        //In reality, the client side coordinate system should really just be taking in shapes
+                        //From the kotlin server.
+                        //to which, the producers of the shapes and movement information is being fed into kotlin
+
+Shapes must handle their own generic instantiation process.
+this means to further extend the available shapes,
+a general format of construction and standardization of constructors must be followed.
+
+CT is the load tester right now.
+
+
+
+

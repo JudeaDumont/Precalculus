@@ -1,16 +1,14 @@
 package MainSystem.Tests;
 
 
-import MainSystem.CoordinateSystem.CartesianCoordinateSystem;
-import MainSystem.Functions.FunctionPredicates;
-import MainSystem.GlobalSystem.OutputPredicates;
-import MainSystem.Points.Point;
-import MainSystem.Triangles.Triangle;
+import MainSystem.CartesianCoordinateSystem.CartesianCoordinateSystem;
+import MainSystem.FunctionPredicates.FunctionPredicates;
+import MainSystem.Point.Point;
+import MainSystem.Triangle.Triangle;
 
 import java.math.BigDecimal;
-import java.util.function.Function;
 
-import static MainSystem.GlobalSystem.OutputPredicates.*;
+import static MainSystem.SystemGlobal.OutputPredicates.print;
 
 /**
  * Created by Owner on 9/18/2017.

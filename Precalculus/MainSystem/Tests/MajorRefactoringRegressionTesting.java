@@ -1,21 +1,20 @@
 package MainSystem.Tests;
 
+import MainSystem.CartesianCoordinateSystem.FourPropositions;
 import MainSystem.Circle.Circle;
 import MainSystem.Circle.CirclePredicates;
-import MainSystem.CoordinateSystem.FourPropositions;
-import MainSystem.GlobalSystem.OutputPredicates;
-import MainSystem.Lines.Line;
-import MainSystem.Lines.LinePredicates;
-import MainSystem.Points.Point;
-import MainSystem.Points.PointPredicates;
+import MainSystem.Line.Line;
+import MainSystem.Line.LinePredicates;
+import MainSystem.Point.Point;
+import MainSystem.Point.PointPredicates;
 import MainSystem.Rectangles.Rectangle;
-import MainSystem.Triangles.EqualateralTriangle;
-import MainSystem.Triangles.Triangle;
-import MainSystem.Triangles.TrianglePredicates;
+import MainSystem.Triangle.Triangle;
+import MainSystem.Triangle.TrianglePredicates;
 
 import java.math.BigDecimal;
 
-import static MainSystem.GlobalSystem.OutputPredicates.*;
+import static MainSystem.SystemGlobal.OutputPredicates.print;
+import static MainSystem.SystemGlobal.OutputPredicates.printBar;
 
 /**
  * Created by Owner on 9/15/2017.

@@ -1,19 +1,22 @@
 package MainSystem.Circle;
 
-import MainSystem.CoordinateSystem.FourPropositions;
-import MainSystem.GlobalSystem.SystemGlobal;
-import MainSystem.Lines.Line;
-import MainSystem.Points.Point;
+import MainSystem.CartesianCoordinateSystem.FourPropositions;
+import MainSystem.Line.Line;
+import MainSystem.Point.Point;
 import MainSystem.Rectangles.Rectangle;
 
 import java.math.BigDecimal;
 
-import static MainSystem.GlobalSystem.SystemGlobal.DEFAULT_CIRCLE_PRECISION;
+import static MainSystem.SystemGlobal.SystemGlobal.DEFAULT_CIRCLE_PRECISION;
 
 /**
  * Created by Owner on 7/18/2017.
  */
 public class CirclePredicates {
+
+    private CirclePredicates() {
+    }
+
     public static Circle deriveCircleFromLine(Line line) {
         Point point1 = line.point1;
         Point point2 = line.point2;

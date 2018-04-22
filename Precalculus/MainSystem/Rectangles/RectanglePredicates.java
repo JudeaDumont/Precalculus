@@ -1,7 +1,7 @@
 package MainSystem.Rectangles;
 
-import MainSystem.Lines.Line;
-import MainSystem.Lines.LinePredicates;
+import MainSystem.Line.Line;
+import MainSystem.Line.LinePredicates;
 
 import java.math.BigDecimal;
 

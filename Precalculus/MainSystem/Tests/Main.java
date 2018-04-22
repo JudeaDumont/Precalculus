@@ -1,27 +1,26 @@
 package MainSystem.Tests;
 
+import MainSystem.CartesianCoordinateSystem.CartesianCoordinateSystemPredicates;
+import MainSystem.CartesianCoordinateSystem.FourPropositions;
 import MainSystem.Circle.Circle;
 import MainSystem.Circle.CirclePredicates;
-import MainSystem.CoordinateSystem.CartesianCoordinateSystem;
-import MainSystem.CoordinateSystem.CartesianCoordinateSystemPredicates;
-import MainSystem.CoordinateSystem.FourPropositions;
-import MainSystem.Functions.FunctionPredicates;
-import MainSystem.GlobalSystem.OutputPredicates;
-import MainSystem.Lines.Line;
-import MainSystem.Lines.LinePredicates;
-import MainSystem.Points.Point;
-import MainSystem.Points.PointPredicates;
-import MainSystem.Rectangles.SquarePredicates;
-import MainSystem.Trajectorys.Projectile;
-import MainSystem.Triangles.Triangle;
-import MainSystem.Triangles.TrianglePredicates;
-import MainSystem.Triangles.TriangleShapeType;
+import MainSystem.FunctionPredicates.FunctionPredicates;
+import MainSystem.Line.Line;
+import MainSystem.Line.LinePredicates;
+import MainSystem.Point.Point;
+import MainSystem.Point.PointPredicates;
+import MainSystem.Projectile.Projectile;
 import MainSystem.Rectangles.Rectangle;
+import MainSystem.Rectangles.SquarePredicates;
+import MainSystem.Triangle.Triangle;
+import MainSystem.Triangle.TrianglePredicates;
+import MainSystem.Triangle.TriangleShapeType;
 
 import java.math.BigDecimal;
 import java.util.function.Function;
 
-import static MainSystem.GlobalSystem.OutputPredicates.*;
+import static MainSystem.SystemGlobal.OutputPredicates.print;
+import static MainSystem.SystemGlobal.OutputPredicates.printBar;
 
 @SuppressWarnings("WeakerAccess")
 public class Main {

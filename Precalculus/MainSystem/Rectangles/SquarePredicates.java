@@ -1,7 +1,7 @@
 package MainSystem.Rectangles;
 
 import MainSystem.Circle.Circle;
-import MainSystem.Points.Point;
+import MainSystem.Point.Point;
 
 /**
  * Created by Owner on 7/18/2017.

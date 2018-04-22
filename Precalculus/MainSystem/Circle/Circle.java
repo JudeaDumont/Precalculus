@@ -1,17 +1,16 @@
 package MainSystem.Circle;
 
-import MainSystem.Angles.AnglePredicates;
-import MainSystem.GlobalSystem.SystemGlobal;
-import MainSystem.Points.Point;
-import MainSystem.Points.PointPredicates;
+import MainSystem.AnglePredicates.AnglePredicates;
+import MainSystem.Point.Point;
+import MainSystem.Point.PointPredicates;
+import MainSystem.SystemGlobal.SystemGlobal;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 
-import static MainSystem.GlobalSystem.SystemGlobal.PI;
+import static MainSystem.SystemGlobal.SystemGlobal.PI;
 
-public class Circle extends MainSystem.GlobalSystem.Shape {
+public class Circle extends MainSystem.SystemGlobal.Shape {
     public Point center = new Point(0, 0);
     public double radius = 0;
 
@@ -23,7 +22,22 @@ public class Circle extends MainSystem.GlobalSystem.Shape {
 
     public Circle(Point center, double radius, long precision) {
         super(new Point[]{});
-        //bypass point validation with intializeShape
+        //bypass point validation within initializeShape (which is usually used to initialize a shape)
+        initialize(center, radius, precision);
+    }
+
+    public Circle(String x, String y, String radius, String precision) {
+        super(new Point[]{});
+        initialize(new Point(x, y), Double.parseDouble(radius), Long.parseLong(precision));
+    }
+
+    public Circle(String[] genericArgList) {
+        super(new Point[]{});
+        System.out.println("genericArgList.length" + genericArgList.length);
+        initialize(new Point(genericArgList[0], genericArgList[1]), Double.parseDouble(genericArgList[2]), Long.parseLong(genericArgList[3]));
+    }
+
+    private void initialize(Point center, double radius, long precision) {
         this.center = center;
         this.radius = radius;
         this.points = getPointsOfACircle(precision);
@@ -39,12 +53,13 @@ public class Circle extends MainSystem.GlobalSystem.Shape {
                 perimeter +
                 "\nCenter:" +
                 center.toString() +
-                "\nPoints:" +
+                "\nPoint:" +
                 PointPredicates.getPointString(points);
     }
 
     @SuppressWarnings("WeakerAccess")
     public Point[] getPointsOfACircle(long precision) {
+        //todo: fix how the precision is only used on one side of eight initial points
         ArrayList<Point> circlePoints = new ArrayList<>();
         for (long i = 0; i < precision; i++) {
             Point point = (calculatePointOfCircle(radius / (i + 1)));

@@ -1,9 +1,9 @@
 package MainSystem.Rectangles;
 
-import MainSystem.GlobalSystem.Shape;
-import MainSystem.Lines.Line;
-import MainSystem.Lines.LinePredicates;
-import MainSystem.Points.Point;
+import MainSystem.Line.Line;
+import MainSystem.Line.LinePredicates;
+import MainSystem.Point.Point;
+import MainSystem.SystemGlobal.Shape;
 
 import java.util.ArrayList;
 

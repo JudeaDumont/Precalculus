@@ -1,20 +1,24 @@
-package MainSystem.Rectangles;
+package MainSystem.Triangle;
 
 import MainSystem.Point.Point;
 
-public class RectangleConcrete extends Rectangle {
-    RectangleConcrete(Point[] points) {
+import java.math.BigDecimal;
+
+public class ScaleneTriangle extends Triangle {
+
+    ScaleneTriangle(Point[] points) {
         super(points);
+        type = TriangleShapeType.Scalene;
     }
 
     @Override
     public String getShapeType() {
-        return "Rectangle";
+        return "ScaleneTriangle";
     }
 
     @Override
     public void calcShapeArea() {
-        area = lines[0].distance.multiply(lines[1].distance);
+        this.area = new BigDecimal(0);
     }
 
     @Override

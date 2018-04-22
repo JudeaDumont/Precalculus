@@ -1,8 +1,8 @@
 package MainSystem.Rectangles;
 
-import MainSystem.Angles.AnglePredicates;
-import MainSystem.Lines.Line;
-import MainSystem.Points.Point;
+import MainSystem.AnglePredicates.AnglePredicates;
+import MainSystem.Line.Line;
+import MainSystem.Point.Point;
 
 import java.math.BigDecimal;
 
