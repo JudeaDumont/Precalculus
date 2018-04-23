@@ -33,7 +33,6 @@ public class Circle extends MainSystem.SystemGlobal.Shape {
 
     public Circle(String[] genericArgList) {
         super(new Point[]{});
-        System.out.println("genericArgList.length" + genericArgList.length);
         initialize(new Point(genericArgList[0], genericArgList[1]), Double.parseDouble(genericArgList[2]), Long.parseLong(genericArgList[3]));
     }
 
@@ -59,7 +58,7 @@ public class Circle extends MainSystem.SystemGlobal.Shape {
 
     @SuppressWarnings("WeakerAccess")
     public Point[] getPointsOfACircle(long precision) {
-        //todo: fix how the precision is only used on one side of eight initial points
+        //todo: fix how the precision is only used on one side of eight initial drawingPoints
         ArrayList<Point> circlePoints = new ArrayList<>();
         for (long i = 0; i < precision; i++) {
             Point point = (calculatePointOfCircle(radius / (i + 1)));

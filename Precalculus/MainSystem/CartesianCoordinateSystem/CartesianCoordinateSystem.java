@@ -11,14 +11,38 @@ import java.util.Collection;
 @SuppressWarnings("WeakerAccess")
 public class CartesianCoordinateSystem extends TwoDimensionalPlane {
     @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
-    public Collection<Point> points = new ArrayList<Point>();
-    public Collection<Line> lines = new ArrayList<Line>();
+    private Collection<Point> points = new ArrayList<Point>();
+    private Collection<Line> lines = new ArrayList<Line>();
     @SuppressWarnings("CanBeFinal")
-    public Collection<Shape> shapes = new ArrayList<Shape>();
+    private Collection<Shape> shapes = new ArrayList<Shape>();
+
+    public void add(Object obj) {
+        if (obj instanceof Point) {
+            points.add((Point) obj);
+        }
+        if (obj instanceof Line) {
+            lines.add((Line) obj);
+        }
+        if (obj instanceof Shape) {
+            shapes.add((Shape) obj);
+        }
+    }
+
+    public Collection<Point> getPoints() {
+        return points;
+    }
+
+    public Collection<Line> getLines() {
+        return lines;
+    }
+
+    public Collection<Shape> getShapes() {
+        return shapes;
+    }
 
     public void plotPoint(Point point) {
-        //Keeping the plotted points seperate from the grid that they are being plotted on allows transferability of the points.
-        //This would be called via another function that would call a repaint making use of the array of points afterward
+        //Keeping the plotted drawingPoints seperate from the grid that they are being plotted on allows transferability of the drawingPoints.
+        //This would be called via another function that would call a repaint making use of the array of drawingPoints afterward
         points.add(point);
     }
 
@@ -54,5 +78,11 @@ public class CartesianCoordinateSystem extends TwoDimensionalPlane {
         pointString += "\n";
         return "Origin X Axis = " + this.originPoint.xCoordinate.toString() + "\nOrigin Y Axis = " + this.originPoint.yCoordinate.toString() +
                 "\nX Axis = " + this.xAxis.toString() + "\nY Axis = " + this.yAxis + "\nPoint = " + pointString + "\nShapes = " + shapeString;
+    }
+
+    public void clear() {
+        this.points = new ArrayList<>();
+        this.lines = new ArrayList<>();
+        this.shapes = new ArrayList<>();
     }
 }

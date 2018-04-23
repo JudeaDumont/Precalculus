@@ -55,7 +55,7 @@ public class Projectile extends Shape {
     @SuppressWarnings("WeakerAccess")
     public Projectile(Projectile projectile) {
         super(new Point[]{});
-        trajectedObject = new Shape(projectile.trajectedObject) {
+        trajectedObject = new Shape(projectile.trajectedObject, true) {
             @Override
             public String getShapeType() {
                 return trajectedObject.getShapeType();

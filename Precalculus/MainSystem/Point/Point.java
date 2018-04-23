@@ -52,7 +52,7 @@ public class Point {
 
     @Override
     public String toString() {
-        return (this.pointName.equals("") ? "Unnamed" : this.pointName) + " (" + this.xCoordinate.doubleValue() + "," + this.yCoordinate.toString() + ")\n";
+        return (this.pointName.equals("") ? "Unnamed" : this.pointName) + " (" + this.xCoordinate.toString() + "," + this.yCoordinate.toString() + ")\n";
     }
 
     public Point rotate(Point centerOfRotation, double rotationInDegrees) {

@@ -15,33 +15,43 @@ import static MainSystem.SystemGlobal.SystemGlobal.zero;
  * Created by Owner on 7/10/2017.
  */
 public abstract class Shape {
-    public Point[] points;
+    public Point[] points = new Point[0];
     @SuppressWarnings("WeakerAccess")
-    public Line[] lines;
+    public Line[] lines = new Line[0];
     @SuppressWarnings("WeakerAccess")
-    public BigDecimal area;
+    public BigDecimal area = new BigDecimal(0);
     @SuppressWarnings("WeakerAccess")
-    public BigDecimal perimeter;
+    public BigDecimal perimeter = new BigDecimal(0);
     public String name = "";
 
+    //A DEEPCOPY boolean was chosen instead of the following
     //Since this breaks the constructor design pattern intended for the shape usage
     //And since the Projectile Implementations Temporality requires a shape deep copy.
     //Not to mention the general benefits of having a shape deep copy.
     //The copy constructor should essentially be moved to a static method deepCopyShape
-    public Shape(Shape shape) {
-        this.points = new Point[shape.points.length];
-        for (int i = 0; i < shape.points.length; i++) {
-            this.points[i] = new Point(shape.points[i]);
-        }
 
-        this.lines = new Line[shape.lines.length];
-        for (int i = 0; i < shape.lines.length; i++) {
-            this.lines[i] = new Line(shape.lines[i]);
-        }
+    public Shape(Shape shape, boolean deepCopy) {
+        if (deepCopy) {
+            this.points = new Point[shape.points.length];
+            for (int i = 0; i < shape.points.length; i++) {
+                this.points[i] = new Point(shape.points[i]);
+            }
 
-        this.area = new BigDecimal(shape.area.doubleValue());
-        this.perimeter = new BigDecimal(shape.perimeter.doubleValue());
-        this.name = shape.name;
+            this.lines = new Line[shape.lines.length];
+            for (int i = 0; i < shape.lines.length; i++) {
+                this.lines[i] = new Line(shape.lines[i]);
+            }
+
+            this.area = new BigDecimal(shape.area.doubleValue());
+            this.perimeter = new BigDecimal(shape.perimeter.doubleValue());
+            this.name = shape.name;
+        } else {
+            this.points = shape.points;
+            this.lines = shape.lines;
+            this.area = shape.area;
+            this.perimeter = shape.perimeter;
+            this.name = shape.name;
+        }
     }
 
     public abstract String getShapeType();

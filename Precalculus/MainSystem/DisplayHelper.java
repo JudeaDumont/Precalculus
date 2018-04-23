@@ -45,6 +45,7 @@ public class DisplayHelper {
 
     public static void createGenericShape(Object o) {
         //todo: Here is where the shape should be added to a list of shapes the user can select from.
+
         try {
             display.createGenericShape((Shape) o);
         } catch (ClassCastException e) {

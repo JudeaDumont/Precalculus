@@ -18,11 +18,11 @@ import java.util.Collection;
 
 public class Display extends JFrame {
     public JTextField textFieldCmdInputField;
+    public String resizeParameterDebounceVariable = "COMPONENT_RESIZED (0,0 800x500)";
     public ComponentListener resizeListener = new ComponentListener() {
-
         @Override
         public void componentResized(ComponentEvent e) {
-            resizeIfLocked();
+            resizeIfLocked(e);
         }
 
         @Override
@@ -59,12 +59,12 @@ public class Display extends JFrame {
 
         @Override
         public void windowIconified(WindowEvent e) {
-            resizeIfLocked();
+            resizeIfLocked(e);
         }
 
         @Override
         public void windowDeiconified(WindowEvent e) {
-            resizeIfLocked();
+            resizeIfLocked(e);
         }
 
         @Override
@@ -108,14 +108,16 @@ public class Display extends JFrame {
         setVisible(true);
     }
 
-    private void resizeIfLocked() {
+    private void resizeIfLocked(ComponentEvent e) {
         //todo: The check for whether or not boundaries need to be reset on resizing of the window should be done at a top level,
         //This will require redesign along the flow control starting here for each function.
-        for (CartesianCoordinateSystemDisplay cartesianCoordinateSystemDisplay : cartesianCoordinateSystemsDisplays) {
-            cartesianCoordinateSystemDisplay.resize(getSize());
-            cartesianCoordinateSystemDisplay.draw(getGraphics());
+        if (!e.paramString().equals(resizeParameterDebounceVariable)) {
+            resizeParameterDebounceVariable = e.paramString();
+            System.out.println(e.paramString());
+            for (CartesianCoordinateSystemDisplay cartesianCoordinateSystemDisplay : cartesianCoordinateSystemsDisplays) {
+                cartesianCoordinateSystemDisplay.resize(getSize());
+            }
         }
-        repaint();
     }
 
     @Override
@@ -134,28 +136,28 @@ public class Display extends JFrame {
     public void createCenterPoint() {
         //get the Selected Cartesian Coordinate System Display
         CartesianCoordinateSystemDisplay selectedCartesianCoordinateSystemDisplay = cartesianCoordinateSystemsDisplays.iterator().next();
-        selectedCartesianCoordinateSystemDisplay.backingSystem.points.add(new Point(0, 0));
+        selectedCartesianCoordinateSystemDisplay.addPoint(new Point(0, 0));
         System.out.println("createCenterPoint");
     }
 
     public void createCircle(Point centerPoint, double radius, long precision) {
         //get the Selected Cartesian Coordinate System Display
         CartesianCoordinateSystemDisplay selectedCartesianCoordinateSystemDisplay = cartesianCoordinateSystemsDisplays.iterator().next();
-        selectedCartesianCoordinateSystemDisplay.backingSystem.shapes.add(new Circle(centerPoint, radius, precision));
-        System.out.println("createCircle");
+        selectedCartesianCoordinateSystemDisplay.addShape(new Circle(centerPoint, radius, precision));
+//        System.out.println("createCircle");
     }
 
     public void drawLine(double x1, double y1, double x2, double y2) {
         //get the Selected Cartesian Coordinate System Display
         CartesianCoordinateSystemDisplay selectedCartesianCoordinateSystemDisplay = cartesianCoordinateSystemsDisplays.iterator().next();
-        selectedCartesianCoordinateSystemDisplay.backingSystem.lines.add(new Line(new Point(x1, y1), new Point(x2, y2)));
+        selectedCartesianCoordinateSystemDisplay.addLine(new Line(new Point(x1, y1), new Point(x2, y2)));
 
-        System.out.println("createLine");
+//        System.out.println("createLine");
     }
 
     public void createGenericShape(Shape shape) {
         CartesianCoordinateSystemDisplay selectedCartesianCoordinateSystemDisplay = cartesianCoordinateSystemsDisplays.iterator().next();
-        selectedCartesianCoordinateSystemDisplay.backingSystem.shapes.add(shape);
-        System.out.println("createCircle");
+        selectedCartesianCoordinateSystemDisplay.addShape(shape);
+//        System.out.println("createCircle");
     }
 }

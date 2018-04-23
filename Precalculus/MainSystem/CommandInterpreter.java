@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -29,9 +28,7 @@ public class CommandInterpreter implements ActionListener {
                 DisplayHelper.getDisplay().cartesianCoordinateSystemsDisplays.iterator().forEachRemaining(new Consumer<CartesianCoordinateSystemDisplay>() {
                     @Override
                     public void accept(CartesianCoordinateSystemDisplay cartesianCoordinateSystemDisplay) {
-                        cartesianCoordinateSystemDisplay.backingSystem.points = new ArrayList<>();
-                        cartesianCoordinateSystemDisplay.backingSystem.lines = new ArrayList<>();
-                        cartesianCoordinateSystemDisplay.backingSystem.shapes = new ArrayList<>();
+                        cartesianCoordinateSystemDisplay.clear(false);
                         DisplayHelper.getDisplay().repaint();
                     }
                 });
@@ -100,10 +97,6 @@ public class CommandInterpreter implements ActionListener {
                 //to which, the producers of the shapes and movement information is being fed into kotlin
 
                 Constructor<?> constructor = Class.forName("MainSystem." + commandArg1 + "." + commandArg1).getConstructor(String[].class);
-                System.out.println("argsArray.length" + splitCommand.length);
-                for (String s : splitCommand) {
-                    System.out.println(s);
-                }
                 DisplayHelper.createGenericShape(constructor.newInstance((Object) splitCommand));
             } catch (ClassNotFoundException e1) {
                 System.out.println("ClassNotFoundException");
