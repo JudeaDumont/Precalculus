@@ -11,6 +11,7 @@ import MainSystem.SystemGlobal.Shape;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 public class CartesianCoordinateSystemDisplay {
     CartesianCoordinateSystem backingSystem;
@@ -166,6 +167,9 @@ public class CartesianCoordinateSystemDisplay {
         //each shape/line/point is kept in a hash map by ID, when a shape, line, or point is added, it is added to the draw queue,
         //when a shape/line/point is changed, it is added to the redraw queue.
         //This function should be moved to something called "initial draw" where everything must be drawn
+
+        //todo: allow the user to select what color the shape will be drawn in, random by default
+        //todo: after randomizing the colors that shapes and points are drawn in by default the color selection of the draw function can be simplified
         if (newBoundingBox) {
             setNewBoundingBox();
             newBoundingBox = false;
@@ -209,7 +213,12 @@ public class CartesianCoordinateSystemDisplay {
             );
         }
 
-        graphics.setColor(Color.YELLOW);
+        Random rand = new Random();
+        float r = rand.nextFloat();
+        float g = rand.nextFloat();
+        float b = rand.nextFloat();
+
+        graphics.setColor(new Color(r, g, b));
         for (DrawingPoint point : justShapePoints) {
             graphics.fillOval(
                     point.drawingX - 2,
