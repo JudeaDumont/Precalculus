@@ -1,4 +1,7 @@
 # Precalculus
+
+//todo: rewrite this documentation so that it is relevant to only the drawing system 
+
 The Projects current main focus is on the mathematical representation of shapes in a two dimensional plane and the repeatable functions throughout.
 There are also fundamentals for trajectories of these entities, to serve as a basis for physics and orientation after time.
 This is essentially a creativity based exercise of calculus based computing with attention to code organization.
