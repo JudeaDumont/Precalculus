@@ -55,7 +55,7 @@ Why is it that upon forcing scaling to a massive proportion does the scaling ref
 
 There should never be a point that is entered that cannot be seen with the current setup, which is viewbox locked to bounding coordinates.
 
-C c 0 0 50000 2
+C Circle 0 0 50000 2
 
 C cp
 
@@ -108,3 +108,10 @@ And what is drawn will be stored separately as results of those computations.
     //the "allpoints" container should just be itterated through
     //performing the transformation there.
 
+none of the documentation is even relevant as documentation
+
+Documentation is supposed to be about how and why the system was created the way it was
+Design documentation should be top priority.
+
+//todo: get JIRA Setup and try and integrate the purpose of the software into JIRA's structuring
+//todo: understand what has to be done to document the requirements, purpose and design of this software.
