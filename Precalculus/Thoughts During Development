@@ -76,6 +76,8 @@ a general format of construction and standardization of constructors must be fol
 
 CT is the load tester right now.
 
-
+I'm thinking that Coding standards need to be written traversed and adhered to.
+for at least the public vs private function names.
+Refactoring such that files become much smaller would be a very good exercise as well.
 
 
