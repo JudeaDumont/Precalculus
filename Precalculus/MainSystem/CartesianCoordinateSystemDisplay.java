@@ -12,6 +12,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
+
+//todo: understand the implications and advantages/disadvantatges of static imports and compensate codewise
+import static MainSystem.SystemGlobal.SystemGlobal.calcPrecisionMathContext;
+import static MainSystem.SystemGlobal.SystemGlobal.zero;
 
 public class CartesianCoordinateSystemDisplay {
     CartesianCoordinateSystem backingSystem;
@@ -48,6 +53,8 @@ public class CartesianCoordinateSystemDisplay {
     public Collection<DrawingShape> allShapes = new ArrayList<>();
 
     boolean newBoundingBox = true;
+
+    private static Semaphore mutex = new Semaphore(1);
 
     public CartesianCoordinateSystemDisplay(Graphics graphics, int height, int width, double xAxisRange, double yAxisRange, double denominator) {
         backingSystem = new CartesianCoordinateSystem(xAxisRange, yAxisRange, denominator);
@@ -156,10 +163,28 @@ public class CartesianCoordinateSystemDisplay {
         //there is also no offset for a drawing area either.
         drawingArea.viewBox.height = boundingTop.yCoordinate.subtract(boundingBottom.yCoordinate);
         drawingArea.viewBox.width = boundingRight.xCoordinate.subtract(boundingLeft.xCoordinate);
+        Point prevScaling = new Point(scaling);
         scaling = new Point(
                 drawingArea.width.doubleValue() * 0.80 / drawingArea.viewBox.width.doubleValue(),
                 drawingArea.height.doubleValue() * 0.80 / drawingArea.viewBox.height.doubleValue()
         );
+        if (scaling.xCoordinate.compareTo(zero) != 0 &&
+                scaling.yCoordinate.compareTo(zero) != 0 &&
+                prevScaling.xCoordinate.compareTo(zero) != 0 &&
+                prevScaling.yCoordinate.compareTo(zero) != 0 &&
+                scaling.compareTo(prevScaling) != 0) {
+            prevScaling = new Point(
+                    prevScaling.xCoordinate.divide(scaling.xCoordinate, calcPrecisionMathContext),
+                    prevScaling.yCoordinate.divide(scaling.yCoordinate, calcPrecisionMathContext)
+            );
+            resizeAxis(prevScaling);
+        }
+    }
+
+    private void resizeAxis(Point scaling) {
+        backingSystem.scaleAxis(scaling);
+        xAxis = new DrawingLine(translateLineRelativeToOriginAndViewBox(backingSystem.xAxis));
+        yAxis = new DrawingLine(translateLineRelativeToOriginAndViewBox(backingSystem.yAxis));
     }
 
     public void draw(Graphics graphics) {//drawing everything each time is not acceptable.
@@ -171,10 +196,14 @@ public class CartesianCoordinateSystemDisplay {
         //todo: allow the user to select what color the shape will be drawn in, random by default
         //todo: after randomizing the colors that shapes and points are drawn in by default the color selection of the draw function can be simplified
         if (newBoundingBox) {
-            setNewBoundingBox();
-            newBoundingBox = false;
-            reDraw(graphics);
-            return;
+
+            if (mutex.tryAcquire()) {
+                setNewBoundingBox();
+                newBoundingBox = false;
+                reDraw(graphics);
+                mutex.release();
+                return;
+            }
         }
         graphics.setColor(Color.BLACK);
         for (DrawingLine line : justlines) {

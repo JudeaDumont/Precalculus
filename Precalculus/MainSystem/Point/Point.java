@@ -66,4 +66,23 @@ public class Point {
         BigDecimal yCoordinate = new BigDecimal(Double.toString(Math.sin(Math.toRadians(angle)) * radius));
         return new Point(xCoordinate.add(centerOfRotation.xCoordinate), yCoordinate.add(centerOfRotation.yCoordinate));
     }
+
+    public void scale(Point scaler) {
+        xCoordinate =
+                xCoordinate.multiply(scaler.xCoordinate);
+        yCoordinate =
+                yCoordinate.multiply(scaler.yCoordinate);
+    }
+
+    public int compareTo(Point comparePoint) {
+        if(xCoordinate.compareTo(comparePoint.xCoordinate) == 0)
+        {
+            if(yCoordinate.compareTo(comparePoint.yCoordinate) == 0)
+            {
+                return 0;
+            }
+            return yCoordinate.compareTo(comparePoint.yCoordinate);
+        }
+        return xCoordinate.compareTo(comparePoint.xCoordinate);
+    }
 }

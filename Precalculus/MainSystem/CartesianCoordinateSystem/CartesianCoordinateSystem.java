@@ -8,6 +8,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 
+//todo: understand the implications and advantages/disadvantatges of static imports and compensate codewise
+import static MainSystem.SystemGlobal.SystemGlobal.zero;
+
 @SuppressWarnings("WeakerAccess")
 public class CartesianCoordinateSystem extends TwoDimensionalPlane {
     @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
@@ -84,5 +87,19 @@ public class CartesianCoordinateSystem extends TwoDimensionalPlane {
         this.points = new ArrayList<>();
         this.lines = new ArrayList<>();
         this.shapes = new ArrayList<>();
+    }
+
+    //todo: decide whether or not this should be a function of the two dimensional plane
+    public void scaleAxis(Point scaler) {
+        if (    scaler.xCoordinate.compareTo(zero) != 0 &&
+                scaler.yCoordinate.compareTo(zero) != 0) {
+            xAxis.scale(scaler);
+            yAxis.scale(scaler);
+        }
+        else
+        {
+            //todo: Get more verbose/evident logging setup, get logs setup?
+            System.out.println("Error: Scaler was zero");
+        }
     }
 }

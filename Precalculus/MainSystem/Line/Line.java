@@ -132,4 +132,9 @@ public class Line {
         }
         return yIntercept;
     }
+
+    public void scale(Point scaler) {
+        point1.scale(scaler);
+        point2.scale(scaler);
+    }
 }
